@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حصن المسلم - المعاينة التفاعلية والتنزيل المباشر</title>
+  <title>حصن - المعاينة التفاعلية والتنزيل المباشر</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,7 +81,7 @@
         </div>
         
         <h2 class="text-3xl md:text-5xl font-extrabold leading-tight font-naskh text-black">
-          تطبيق <span class="text-transparent bg-clip-text bg-gradient-to-l from-amber-500 to-emerald-500">حسين / Hisn</span> 🕌
+          تطبيق <span class="text-transparent bg-clip-text bg-gradient-to-l from-amber-500 to-emerald-500">حصن / Hisn</span> 🕌
         </h2>
         
         <p class="text-sm text-neutral-650 leading-relaxed font-naskh">
@@ -137,7 +137,7 @@
             </div>
             <div class="flex items-center gap-2">
               <div class="text-right">
-                <h3 class="text-[11px] font-black font-naskh text-black">حصن المسلم</h3>
+                <h3 class="text-[11px] font-black font-naskh text-black">حصن</h3>
                 <span class="text-[8px] font-bold text-neutral-400 font-naskh">رفيقك اليومي للعبادة</span>
               </div>
               <div class="w-7 h-7 rounded-lg bg-black text-white flex items-center justify-center">
@@ -532,25 +532,97 @@
 
             <!-- SCREEN 4: SERVICES (العبادات والخدمات) -->
             <div id="screen-services" class="screen hidden space-y-4">
-              <div class="space-y-1 text-right">
-                <h2 class="text-base font-extrabold font-naskh text-black">الخدمات الإضافية</h2>
-                <p class="text-[9px] text-neutral-500 font-naskh">مسبحة التسبيح التفاعلية وإعدادات التطبيق المخصصة</p>
+              <!-- Subtabs Toggle -->
+              <div class="flex bg-neutral-100 border border-neutral-205 rounded-xl p-1 gap-1 select-none">
+                <button id="services-subtab-btn-tasbih" onclick="switchServicesSubtab('tasbih')" class="flex-1 py-1.5 rounded-lg text-[9px] font-black font-naskh transition-all">المسبحة</button>
+                <button id="services-subtab-btn-recovery" onclick="switchServicesSubtab('recovery')" class="flex-1 py-1.5 rounded-lg text-[9px] font-black font-naskh transition-all">التعافي</button>
               </div>
 
-              <!-- Interactive Tasbih counter card -->
-              <div class="bg-white border border-neutral-200 rounded-[28px] p-5 text-center flex flex-col items-center gap-4 shadow-sm">
-                <span class="text-[9px] font-black text-neutral-400 font-naskh tracking-widest uppercase">مسبحة التسبيح التفاعلية</span>
-                
-                <!-- Main Tasbih Clickable Circle -->
-                <button onclick="incrementMockTasbih()" class="w-28 h-28 rounded-full border-4 border-emerald-500 bg-white flex flex-col items-center justify-center shadow-md active:scale-95 transition-all outline-none">
-                  <span id="tasbih-num" class="text-3xl font-black font-sans text-neutral-900">0</span>
-                  <span id="tasbih-target-label" class="text-[8px] font-bold text-neutral-400 font-naskh mt-0.5">الهدف: 33</span>
-                </button>
+              <!-- SUBTAB VIEW: TASBIH -->
+              <div id="services-sub-tasbih" class="services-subscreen space-y-4">
+                <!-- Interactive Tasbih counter card -->
+                <div class="bg-white border border-neutral-200 rounded-[28px] p-5 text-center flex flex-col items-center gap-4 shadow-sm">
+                  <span class="text-[9px] font-black text-neutral-400 font-naskh tracking-widest uppercase">مسبحة التسبيح التفاعلية</span>
+                  
+                  <!-- Main Tasbih Clickable Circle -->
+                  <button onclick="incrementMockTasbih()" class="w-28 h-28 rounded-full border-4 border-emerald-500 bg-white flex flex-col items-center justify-center shadow-md active:scale-95 transition-all outline-none">
+                    <span id="tasbih-num" class="text-3xl font-black font-sans text-neutral-900">0</span>
+                    <span id="tasbih-target-label" class="text-[8px] font-bold text-neutral-400 font-naskh mt-0.5">الهدف: 33</span>
+                  </button>
 
-                <div class="flex items-center gap-3 w-full justify-center">
-                  <button onclick="switchMockTasbihTarget(33)" class="px-2.5 py-1 bg-neutral-100 text-neutral-800 text-[8px] font-black rounded-lg">الهدف 33</button>
-                  <button onclick="switchMockTasbihTarget(99)" class="px-2.5 py-1 bg-neutral-100 text-neutral-800 text-[8px] font-black rounded-lg">الهدف 99</button>
-                  <button onclick="resetMockTasbih()" class="p-1 text-red-500 hover:scale-105 active:scale-90 transition-transform"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
+                  <div class="flex items-center gap-3 w-full justify-center">
+                    <button onclick="switchMockTasbihTarget(33)" class="px-2.5 py-1 bg-neutral-100 text-neutral-800 text-[8px] font-black rounded-lg">الهدف 33</button>
+                    <button onclick="switchMockTasbihTarget(99)" class="px-2.5 py-1 bg-neutral-100 text-neutral-800 text-[8px] font-black rounded-lg">الهدف 99</button>
+                    <button onclick="resetMockTasbih()" class="p-1 text-red-500 hover:scale-105 active:scale-90 transition-transform"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SUBTAB VIEW: RECOVERY TRACKER -->
+              <div id="services-sub-recovery" class="services-subscreen hidden space-y-4 animate-fade-slide-in">
+                <!-- Recovery Card -->
+                <div class="bg-white border border-neutral-200 rounded-[28px] p-5 text-center flex flex-col items-center gap-4 shadow-sm relative overflow-hidden">
+                  <div class="absolute top-0 right-0 w-16 h-16 bg-emerald-500/5 rounded-full translate-x-6 -translate-y-6"></div>
+                  
+                  <!-- Start State -->
+                  <div id="recovery-start-state" class="py-4 space-y-3 flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                      <i data-lucide="shield" class="w-5 h-5"></i>
+                    </div>
+                    <div class="space-y-1">
+                      <h4 class="text-[10px] font-black text-neutral-800 font-naskh">ابدأ رحلة التعافي والنقاء</h4>
+                      <p class="text-[8px] text-neutral-500 font-naskh leading-relaxed">
+                        التزم بالعفة وراقب أيام النقاء والتعافي من العادات السلبية مع التحفيز الروحاني والتسجيل التلقائي.
+                      </p>
+                    </div>
+                    <button onclick="startMockRecovery()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-[9px] font-black font-naskh transition-all">
+                      ابدأ التحدي الآن 🛡️
+                    </button>
+                  </div>
+
+                  <!-- Active State -->
+                  <div id="recovery-active-state" class="hidden w-full flex flex-col items-center gap-4">
+                    <div class="flex justify-between items-center w-full">
+                      <span id="web-best-days" class="bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 px-2.5 py-0.5 rounded-full text-[8px] font-bold font-naskh">أفضل رقم: 0 يوم</span>
+                      <span class="text-[8px] text-neutral-400 font-naskh font-bold">التحدي نشط</span>
+                    </div>
+
+                    <!-- Circular Progress -->
+                    <div class="relative w-24 h-24 flex items-center justify-center">
+                      <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="48" cy="48" r="42" stroke="currentColor" stroke-width="3" class="text-neutral-100" fill="transparent" />
+                        <circle id="web-recovery-progress-circle" cx="48" cy="48" r="42" stroke="currentColor" stroke-width="3" class="text-emerald-500" fill="transparent" stroke-dasharray="364.4" stroke-dashoffset="364.4" />
+                      </svg>
+                      <div class="absolute flex flex-col items-center justify-center">
+                        <span id="web-recovery-days" class="text-xl font-black font-sans text-neutral-900">1</span>
+                        <span class="text-[8px] font-black text-neutral-450 font-naskh">يوم نقاء</span>
+                      </div>
+                    </div>
+
+                    <!-- Stage -->
+                    <div class="space-y-1">
+                      <div id="web-recovery-stage" class="text-[9px] font-black text-neutral-850 font-naskh">المرحلة: العزيمة والصبر 🛡️</div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex gap-2 w-full pt-1">
+                      <button onclick="incrementMockRecoveryDay()" class="flex-1 py-1.5 bg-neutral-100 text-neutral-855 rounded-xl text-[8px] font-black font-naskh border border-neutral-200">يوم جديد</button>
+                      <button onclick="toggleRelapseModal(true)" class="flex-1 py-1.5 bg-red-500/10 border border-red-500/20 text-red-500 rounded-xl text-[8px] font-black font-naskh">لقد زللت</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Quotes Card -->
+                <div class="bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-right space-y-1 shadow-sm">
+                  <span class="text-[7px] font-black text-neutral-400 font-naskh uppercase">جرعة التحفيز الإيماني</span>
+                  <p class="text-[9px] font-bold leading-relaxed text-neutral-800 font-amiri">وَلْيَسْتَعْفِفِ الَّذِينَ لَا يَجِدُونَ نِكاَحاً حَتَّى يُغْنِيَهُمُ اللَّهُ مِن فَضْلِهِ</p>
+                  <span class="text-[7px] font-black text-neutral-400 font-sans block text-left">— سورة النور (33)</span>
+                </div>
+
+                <!-- Relapse logs -->
+                <div id="web-relapse-logs-container" class="hidden bg-white border border-neutral-200 rounded-2xl p-3 text-right space-y-2 shadow-sm">
+                  <span class="text-[7px] font-black text-neutral-400 font-naskh uppercase">المحاولات السابقة</span>
+                  <div id="web-relapse-logs" class="space-y-1.5 max-h-[100px] overflow-y-auto"></div>
                 </div>
               </div>
             </div>
@@ -598,9 +670,32 @@
   <!-- FOOTER -->
   <footer class="bg-neutral-100 border-t border-neutral-200 py-6 text-center text-[10px] text-neutral-450 font-naskh">
     <div class="max-w-6xl mx-auto px-6">
-      <p>تطبيق حسين / Hisn © 2026. تم التطوير والتحسين بكل حب لخدمة المسلمين في كل مكان.</p>
+      <p>تطبيق حصن / Hisn © 2026. تم التطوير والتحسين بكل حب لخدمة المسلمين في كل مكان.</p>
     </div>
   </footer>
+
+  <!-- RELAPSE CONFIRMATION MODAL FOR WEB SIMULATOR -->
+  <div id="web-relapse-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-6">
+    <div class="bg-white border border-neutral-200 rounded-3xl p-6 w-full max-w-sm space-y-5 text-right shadow-2xl">
+      <div class="space-y-1.5 flex flex-col items-center text-center">
+        <div class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mb-1">
+          <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-sm font-black text-red-600 font-naskh">هل أنت متأكد من تسجيل زلّة؟</h3>
+        <p class="text-xs text-neutral-500 font-bold font-naskh leading-relaxed">
+          سيتم إعادة ضبط العداد الحالي إلى الصفر وحفظ هذه المحاولة في السجل للمتابعة.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="toggleRelapseModal(false)" class="flex-1 py-3 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 text-neutral-800 text-xs font-black rounded-xl font-naskh transition-colors">
+          تراجع وإلغاء
+        </button>
+        <button onclick="resetMockRecovery()" class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white text-xs font-black rounded-xl font-naskh transition-colors shadow-sm">
+          نعم، إعادة الضبط
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- App Simulation Logic -->
   <script>
@@ -919,11 +1014,131 @@
       document.getElementById('tasbih-num').innerText = 0;
     }
 
+    // Services Subtabs Toggle (Tasbih vs Recovery)
+    let activeServicesSubtabId = 'tasbih';
+    function switchServicesSubtab(subtabId) {
+      document.querySelectorAll('.services-subscreen').forEach(scr => scr.classList.add('hidden'));
+      
+      document.querySelectorAll('[id^="services-subtab-btn-"]').forEach(btn => {
+        btn.classList.remove('bg-white', 'text-black', 'shadow-sm', 'border', 'border-neutral-200/55');
+        btn.classList.add('text-neutral-500');
+      });
+
+      const targetSub = document.getElementById(`services-sub-${subtabId}`);
+      if (targetSub) targetSub.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`services-subtab-btn-${subtabId}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-neutral-500');
+        activeBtn.classList.add('bg-white', 'text-black', 'shadow-sm', 'border', 'border-neutral-200/55');
+      }
+
+      activeServicesSubtabId = subtabId;
+    }
+
+    // Mock Recovery Tracker Logic
+    let recoveryDays = 0;
+    let recoveryActive = false;
+    let bestRecoveryDays = 0;
+    let mockRelapseLogs = [];
+
+    function startMockRecovery() {
+      recoveryActive = true;
+      recoveryDays = 1; // start at day 1 for preview
+      updateRecoveryUI();
+    }
+
+    function toggleRelapseModal(show) {
+      const modal = document.getElementById('web-relapse-modal');
+      if (show) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function resetMockRecovery() {
+      // Log relapse
+      const todayStr = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric' });
+      mockRelapseLogs.unshift({ date: todayStr, duration: recoveryDays });
+      
+      if (recoveryDays > bestRecoveryDays) {
+        bestRecoveryDays = recoveryDays;
+      }
+      
+      recoveryDays = 0;
+      toggleRelapseModal(false);
+      updateRecoveryUI();
+    }
+
+    function incrementMockRecoveryDay() {
+      if (!recoveryActive) return;
+      recoveryDays += 1;
+      if (recoveryDays > bestRecoveryDays) {
+        bestRecoveryDays = recoveryDays;
+      }
+      updateRecoveryUI();
+    }
+
+    function updateRecoveryUI() {
+      const startState = document.getElementById('recovery-start-state');
+      const activeState = document.getElementById('recovery-active-state');
+      
+      if (!recoveryActive) {
+        startState.classList.remove('hidden');
+        activeState.classList.add('hidden');
+        return;
+      }
+      
+      startState.classList.add('hidden');
+      activeState.classList.remove('hidden');
+      
+      // Update texts
+      document.getElementById('web-recovery-days').innerText = recoveryDays;
+      document.getElementById('web-best-days').innerText = `أفضل رقم: ${bestRecoveryDays} يوم`;
+      
+      // Determine stage
+      let stageLabel = "العزيمة والصبر";
+      let stageIcon = "🛡️";
+      if (recoveryDays > 30) { stageLabel = "ملتزم النقاء والعفة"; stageIcon = "🌟"; }
+      else if (recoveryDays > 14) { stageLabel = "التحرر والسيطرة"; stageIcon = "🔓"; }
+      else if (recoveryDays > 7) { stageLabel = "الثبات والمقاومة"; stageIcon = "⚡"; }
+      else if (recoveryDays > 3) { stageLabel = "التطهير والبدء"; stageIcon = "🌱"; }
+      
+      document.getElementById('web-recovery-stage').innerText = `المرحلة: ${stageLabel} ${stageIcon}`;
+      
+      // Update circular dasharray
+      const circle = document.getElementById('web-recovery-progress-circle');
+      const total = 364.4;
+      const offset = total - Math.min((recoveryDays / 30) * total, total);
+      circle.style.strokeDashoffset = offset;
+      
+      // Render logs
+      const logsBox = document.getElementById('web-relapse-logs');
+      logsBox.innerHTML = '';
+      if (mockRelapseLogs.length > 0) {
+        document.getElementById('web-relapse-logs-container').classList.remove('hidden');
+        mockRelapseLogs.slice(0, 3).forEach(log => {
+          logsBox.innerHTML += `
+            <div class="flex justify-between items-center p-2.5 bg-neutral-50 border border-neutral-150 rounded-xl">
+              <span class="text-[9px] font-black text-neutral-700">${log.date}</span>
+              <span class="text-[9px] font-bold text-neutral-500">المدة: <span class="font-mono text-neutral-900 font-black">${log.duration}</span> يوم نقاء</span>
+            </div>
+          `;
+        });
+      } else {
+        document.getElementById('web-relapse-logs-container').classList.add('hidden');
+      }
+    }
+
     // Initialization
     switchTab('home');
     switchShieldSubtab('adhkar');
     switchAdhkarCategory('morning');
     switchRuqyahSegment('written');
+    switchServicesSubtab('tasbih');
   </script>
 </body>
 </html>
