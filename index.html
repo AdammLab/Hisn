@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حصن المسلم - رفيقك اليومي للعبادة والأذكار</title>
+  <title>حصن المسلم - المعاينة التفاعلية والتنزيل المباشر</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Outfit:wght@400;600;800&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind CSS v3 CDN (Required for tailwind.config runtime support) -->
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -40,528 +40,913 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    /* Exact app background patterns */
-    .app-bg-gradient {
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.03) 0, transparent 40%),
-        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.02) 0, transparent 40%);
-    }
-    
-    /* Custom Scrollbar matching App */
+    /* Custom scrollbar matching App */
     ::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
+      width: 4px;
+      height: 4px;
     }
     ::-webkit-scrollbar-track {
-      background: #ffffff;
-    }
-    .dark ::-webkit-scrollbar-track {
-      background: #0e0e10;
+      background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-      background: #cccccc;
-      border-radius: 2.5px;
+      background: rgba(156, 163, 175, 0.3);
+      border-radius: 10px;
     }
     .dark ::-webkit-scrollbar-thumb {
-      background: #27272a;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #999999;
+      background: rgba(75, 85, 99, 0.4);
     }
     
-    /* Animations matching App */
-    @keyframes pulse-subtle {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.85; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-    .animate-pulse-subtle {
-      animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    .dark .glass-card {
+      background: rgba(22, 22, 26, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
   </style>
 </head>
-<body class="bg-white dark:bg-[#0e0e10] text-[#121214] dark:text-[#f4f4f5] font-outfit transition-colors duration-300 overflow-x-hidden app-bg-gradient">
+<body class="bg-slate-50 dark:bg-[#08080a] text-neutral-800 dark:text-neutral-100 font-outfit min-h-screen flex flex-col justify-between transition-colors duration-300">
 
-  <!-- HEADER (Exact App style) -->
-  <header class="sticky top-0 z-40 bg-white/90 dark:bg-[#0e0e10]/90 backdrop-blur-md border-b border-neutral-100 dark:border-neutral-900 px-6 py-4 flex items-center justify-between transition-colors duration-300">
-    <div class="max-w-6xl mx-auto w-full flex items-center justify-between">
-      
-      <!-- Brand Logo (Matching App header) -->
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-black dark:bg-white text-white dark:text-black flex items-center justify-center shadow-sm">
-          <i data-lucide="sparkles" class="w-4 h-4"></i>
-        </div>
-        <div>
-          <h1 class="text-sm font-extrabold tracking-tight font-naskh">حصن المسلم</h1>
-          <p class="text-[9px] text-neutral-500 dark:text-neutral-400 font-bold -mt-0.5">رفيقك اليومي للعبادة</p>
-        </div>
-      </div>
-      
-      <!-- Theme Switcher (Matching App button) -->
-      <button onclick="toggleTheme()" class="p-2 rounded-xl bg-neutral-50 dark:bg-[#16161a] border border-neutral-150 dark:border-neutral-800 text-neutral-500 hover:text-black dark:hover:text-white transition-all clickable">
-        <i id="theme-icon" data-lucide="sun" class="w-4 h-4"></i>
-      </button>
+  <!-- TOP PROMOTIONAL BANNER -->
+  <div class="bg-gradient-to-r from-emerald-600 to-teal-700 dark:from-emerald-950 dark:to-teal-900 text-white text-center py-2.5 px-4 text-xs font-bold font-naskh flex items-center justify-center gap-2 shadow-sm z-50">
+    <span>✨ النسخة الرسمية الأكثر تحسيناً وخفة بحجم 4.9MB فقط متوفرة الآن!</span>
+    <a href="https://github.com/AdammLab/Hisn/releases/download/v1.0.0/Hisn.apk" class="bg-white text-emerald-700 dark:bg-emerald-500 dark:text-black px-3 py-1 rounded-lg font-black hover:opacity-90 active:scale-95 transition-all text-[10px]">
+      تنزيل APK المباشر
+    </a>
+  </div>
 
-    </div>
-  </header>
-
-  <!-- HERO SECTION -->
-  <section class="max-w-6xl mx-auto px-6 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-    
-    <!-- Hero Text (Right Side in RTL) -->
-    <div class="lg:col-span-7 space-y-6 text-right order-2 lg:order-1">
-      <div class="inline-flex items-center gap-1.5 bg-neutral-50 dark:bg-[#16161a] border border-neutral-150 dark:border-neutral-800 px-3 py-1 rounded-full text-[10px] font-bold font-naskh">
-        <i data-lucide="shield" class="w-3.5 h-3.5 text-amber-500"></i>
-        <span class="text-neutral-700 dark:text-neutral-300">تطبيق الإنتاج الرسمي جاهز الآن</span>
-      </div>
+  <!-- MAIN CONTAINER (Centered Simulator on Desktop, full screen on mobile) -->
+  <main class="flex-1 flex items-center justify-center py-6 md:py-12 px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl w-full items-center">
       
-      <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight font-naskh text-black dark:text-white">
-        رفيقك الدائم للتحصين <br>
-        <span class="text-transparent bg-clip-text bg-gradient-to-l from-amber-500 to-emerald-500">والأذكار اليومية</span>
-      </h2>
-      
-      <p class="text-sm md:text-base text-neutral-600 dark:text-neutral-450 leading-relaxed font-naskh max-w-xl">
-        تطبيق إسلامي فريد وخفيف الوزن مصمم لمساعدتك في الحفاظ على أذكار الصباح والمساء، تصفح المصحف الشريف بالكامل أوفلاين، ومتابعة مواقيت الصلاة بدقة مع تنبيهات تفاعلية مكررة وخلفية صوتية مستقرة تدوم لساعات.
-      </p>
-      
-      <!-- Call to Actions (Matching App buttons) -->
-      <div class="flex flex-wrap gap-4 pt-4 justify-start">
-        <a href="#download" class="px-7 py-3.5 bg-emerald-600 text-white dark:bg-emerald-500 dark:text-black rounded-2xl font-black text-xs font-naskh transition-all hover:scale-[1.02] shadow-sm hover:opacity-90 active:scale-95 clickable flex items-center gap-2">
-          <i data-lucide="download" class="w-4.5 h-4.5"></i>
-          تحميل التطبيق (Android APK)
-        </a>
-        <a href="#demo" class="px-7 py-3.5 bg-neutral-50 dark:bg-[#16161a] border border-neutral-150 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 rounded-2xl font-black text-xs font-naskh transition-all hover:scale-[1.02] clickable active:scale-95">
-          جرب التنبيه الصوتي الحسابي
-        </a>
-      </div>
-    </div>
-    
-    <!-- Hero Mockup (Left Side in RTL) -->
-    <div class="lg:col-span-5 flex justify-center order-1 lg:order-2">
-      <!-- Device container with dark app theme -->
-      <div class="relative w-64 h-[520px] rounded-[42px] border-[7px] border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#0e0e10] shadow-2xl overflow-hidden">
-        <!-- Speaker / Camera notch -->
-        <div class="absolute top-0 inset-x-0 h-4 bg-neutral-200 dark:bg-neutral-800 flex justify-center items-center z-30">
-          <div class="w-16 h-3 rounded-full bg-neutral-900 -mt-1.5"></div>
+      <!-- Right Side: Marketing Info & Description -->
+      <div class="lg:col-span-6 space-y-6 text-right order-2 lg:order-1">
+        <div class="inline-flex items-center gap-1.5 bg-neutral-200 dark:bg-[#16161a] border border-neutral-300 dark:border-neutral-800 px-3.5 py-1.5 rounded-full text-[10px] font-bold font-naskh">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-neutral-600 dark:text-neutral-300">محاكاة تفاعلية مباشرة للتطبيق الفعلي</span>
         </div>
         
-        <!-- App Inside Emulator Screen -->
-        <div class="w-full h-full pt-4 bg-white dark:bg-[#0e0e10] flex flex-col justify-between overflow-y-auto no-scrollbar text-right text-[#121214] dark:text-[#f4f4f5]">
+        <h2 class="text-3xl md:text-5xl font-extrabold leading-tight font-naskh text-black dark:text-white">
+          تطبيق <span class="text-transparent bg-clip-text bg-gradient-to-l from-amber-500 to-emerald-500">حسين / Hisn</span> 🕌
+        </h2>
+        
+        <p class="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-naskh">
+          شاهد وجرب التطبيق بنفس الهوية والشكل الفعلي في جوالك. يمكنك استخدام المسبحة التفاعلية، تشغيل قنوات البث المباشر للراديو، قراءة القرآن الكريم أوفلاين بالكامل، وتصفح الرقية المكتوبة من خلال المحاكي الذكي المرفق.
+        </p>
+
+        <!-- Feature Badges Grid -->
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div class="bg-white dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800/80 p-3.5 rounded-2xl text-right">
+            <h4 class="text-xs font-black font-naskh text-neutral-900 dark:text-neutral-50 font-bold">أوفلاين 100% 📖</h4>
+            <p class="text-[9px] font-bold text-neutral-550 dark:text-neutral-400 font-naskh mt-0.5">المصحف كامل ومحرك بحث محلي لحظي</p>
+          </div>
+          <div class="bg-white dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800/80 p-3.5 rounded-2xl text-right">
+            <h4 class="text-xs font-black font-naskh text-neutral-900 dark:text-neutral-50 font-bold">تذكير دوري ذكي 🔔</h4>
+            <p class="text-[9px] font-bold text-neutral-550 dark:text-neutral-400 font-naskh mt-0.5">إشعار كل 30 دقيقة للأذكار الفائتة</p>
+          </div>
+          <div class="bg-white dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800/80 p-3.5 rounded-2xl text-right">
+            <h4 class="text-xs font-black font-naskh text-neutral-900 dark:text-neutral-50 font-bold">مشغل راديو مستقر 📻</h4>
+            <p class="text-[9px] font-bold text-neutral-550 dark:text-neutral-400 font-naskh mt-0.5">إذاعات القرآن والرقية مع كاش للاتصال</p>
+          </div>
+          <div class="bg-white dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800/80 p-3.5 rounded-2xl text-right">
+            <h4 class="text-xs font-black font-naskh text-neutral-900 dark:text-neutral-50 font-bold">أداء وسرعة خرافية ⚡</h4>
+            <p class="text-[9px] font-bold text-neutral-550 dark:text-neutral-400 font-naskh mt-0.5">حجم APK فقط 4.9MB واستهلاك صفر إنترنت</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-4 pt-4 justify-start">
+          <a href="https://github.com/AdammLab/Hisn/releases/download/v1.0.0/Hisn.apk" class="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white dark:bg-emerald-500 dark:hover:bg-emerald-400 dark:text-black rounded-2xl font-black text-xs font-naskh transition-all hover:scale-[1.02] shadow-md flex items-center gap-2">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            تحميل حزمة APK المباشرة
+          </a>
+          <a href="https://github.com/AdammLab/Hisn" target="_blank" class="px-6 py-3.5 bg-neutral-200 hover:bg-neutral-300 dark:bg-[#16161a] dark:hover:bg-[#202026] border border-neutral-305 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 rounded-2xl font-black text-xs font-naskh transition-all hover:scale-[1.02] flex items-center gap-2">
+            <i data-lucide="github" class="w-4 h-4"></i>
+            شاهد كود المشروع المصدري
+          </a>
+        </div>
+      </div>
+
+      <!-- Left Side: Emulator Shell (The exact app UI simulator) -->
+      <div class="lg:col-span-6 flex justify-center order-1 lg:order-2">
+        <div class="relative w-full max-w-[340px] h-[670px] rounded-[50px] border-[10px] border-neutral-300 dark:border-neutral-800 bg-white dark:bg-[#0e0e10] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col justify-between">
           
-          <!-- Mockup Header -->
-          <div class="p-4 flex items-center justify-between border-b border-neutral-100 dark:border-neutral-900">
-            <div class="w-7 h-7 rounded-lg bg-neutral-50 dark:bg-[#16161a] flex items-center justify-center text-amber-500">
-              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-            </div>
-            <span class="text-[10px] font-black font-naskh text-black dark:text-white">حصن المسلم</span>
-            <i data-lucide="menu" class="w-4 h-4 text-neutral-400"></i>
+          <!-- Device Camera Notch -->
+          <div class="absolute top-0 inset-x-0 h-4 bg-neutral-300 dark:bg-neutral-800 flex justify-center items-end z-40 select-none">
+            <div class="w-24 h-3 bg-neutral-900 rounded-full -mt-1.5 mb-0.5"></div>
           </div>
           
-          <!-- Mockup Content (Next Prayer Card) -->
-          <div class="p-4 space-y-4 flex-1">
-            <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-150 dark:border-neutral-800 rounded-3xl p-4 space-y-2 text-right">
-              <span class="text-[8px] font-black text-emerald-500 dark:text-emerald-500 uppercase tracking-wide font-naskh">الصلاة القادمة</span>
-              <div class="flex justify-between items-center">
-                <span class="text-lg font-black font-naskh text-black dark:text-white">العصر</span>
-                <span class="text-xs font-bold text-neutral-500 dark:text-neutral-450 font-sans">3:24 م</span>
+          <!-- App Header -->
+          <div class="pt-6 pb-3 px-5 flex items-center justify-between border-b border-neutral-100 dark:border-neutral-900 bg-white dark:bg-[#0e0e10] z-20 transition-colors">
+            <button onclick="toggleTheme()" class="w-8 h-8 rounded-xl bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 text-neutral-500 hover:text-black dark:hover:text-white flex items-center justify-center transition-all">
+              <i id="theme-btn-icon" data-lucide="sun" class="w-4 h-4"></i>
+            </button>
+            <div class="flex items-center gap-2">
+              <div class="text-right">
+                <h3 class="text-[11px] font-black font-naskh text-black dark:text-white">حصن المسلم</h3>
+                <span class="text-[8px] font-bold text-neutral-400 dark:text-neutral-500 font-naskh">رفيقك اليومي للعبادة</span>
               </div>
-              <p class="text-[9px] text-neutral-500 dark:text-neutral-400 font-naskh">متبقي: 2 ساعة و 15 دقيقة</p>
-            </div>
-            
-            <!-- Quick Adhkar Tracker -->
-            <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-150 dark:border-neutral-800 rounded-3xl p-4 space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-[10px] font-black font-naskh text-black dark:text-white">أذكار الصباح</span>
-                <span class="text-[9px] text-emerald-500 font-bold font-naskh">مكتمل 80%</span>
+              <div class="w-7 h-7 rounded-lg bg-black dark:bg-white text-white dark:text-black flex items-center justify-center">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
               </div>
-              <div class="w-full h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
-                <div class="h-full bg-emerald-500" style="width: 80%"></div>
-              </div>
-            </div>
-            
-            <!-- Audio Track player simulator -->
-            <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-150 dark:border-neutral-800 rounded-3xl p-4 flex items-center justify-between gap-3">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center">
-                  <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
-                </div>
-                <div class="text-right">
-                  <h4 class="text-[9px] font-black font-naskh truncate text-black dark:text-white">سورة البقرة (الرقية)</h4>
-                  <p class="text-[7px] text-neutral-500 dark:text-neutral-450 font-naskh">الشيخ مشاري العفاسي</p>
-                </div>
-              </div>
-              <i data-lucide="volume-2" class="w-4 h-4 text-emerald-500"></i>
             </div>
           </div>
-          
-          <!-- Mockup Navigation -->
-          <div class="p-3 bg-neutral-50 dark:bg-[#16161a] border-t border-neutral-100 dark:border-neutral-900 flex justify-around">
-            <div class="flex flex-col items-center text-emerald-500">
-              <i data-lucide="sparkles" class="w-4 h-4"></i>
-              <span class="text-[7px] font-black font-naskh mt-0.5">الرئيسية</span>
+
+          <!-- App Emulator Screens Container -->
+          <div class="flex-1 overflow-y-auto bg-white dark:bg-[#0e0e10] p-4 space-y-4 no-scrollbar transition-colors">
+            
+            <!-- SCREEN 1: HOME (الرئيسية) -->
+            <div id="screen-home" class="screen space-y-4">
+              <!-- Greeting & Date Card -->
+              <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-[28px] p-4 text-right space-y-3.5 transition-colors">
+                <div class="flex justify-between items-center">
+                  <span class="bg-black text-white dark:bg-white dark:text-black px-2.5 py-0.5 rounded-full text-[9px] font-bold font-sans">
+                    13 مُحَرَّم 1448 هـ
+                  </span>
+                  <span class="text-[9px] text-neutral-400 font-naskh">طاب يومك بذكر الله</span>
+                </div>
+                <h4 class="text-sm font-black font-naskh text-neutral-900 dark:text-neutral-100">السلام عليكم ورحمة الله</h4>
+                
+                <!-- Inner Next Prayer Alert -->
+                <div class="border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3 flex justify-between items-center bg-white dark:bg-[#0e0e10]/40 transition-colors">
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-7 h-7 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500">
+                      <i data-lucide="clock" class="w-4 h-4"></i>
+                    </div>
+                    <div class="text-right">
+                      <h5 class="text-[10px] font-black font-naskh text-neutral-800 dark:text-neutral-200 font-bold">الصلاة القادمة: الظهر</h5>
+                      <p class="text-[8px] text-neutral-400 font-naskh">المتبقي: 7 ساعة و 49 دقيقة</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-black font-mono border border-neutral-200 dark:border-neutral-800 px-2 py-0.5 rounded-lg bg-neutral-50 dark:bg-neutral-900 text-neutral-850 dark:text-neutral-100">12:58</span>
+                </div>
+              </div>
+
+              <!-- Main Stats Dashboard -->
+              <div class="grid grid-cols-2 gap-3">
+                <!-- Counter circular progress -->
+                <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-[28px] p-4 flex flex-col items-center justify-center gap-2 text-center col-span-1 min-h-[140px] transition-colors">
+                  <span class="text-[8px] font-black text-neutral-500 dark:text-neutral-500 font-naskh">اكتمال التحصين</span>
+                  <div class="relative w-16 h-16 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90">
+                      <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3" class="text-neutral-100 dark:text-neutral-900" fill="transparent" />
+                      <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="3" class="text-emerald-500" fill="transparent" stroke-dasharray="175.9" stroke-dashoffset="175.9" />
+                    </svg>
+                    <span class="absolute text-xs font-black font-sans text-neutral-900 dark:text-neutral-50">0%</span>
+                  </div>
+                  <span class="text-[7px] font-bold text-neutral-400 font-naskh">إنجاز اليوم</span>
+                </div>
+
+                <div class="space-y-3 col-span-1">
+                  <!-- Streak tracker card -->
+                  <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-[22px] p-3 text-right flex items-center justify-between gap-2 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500">
+                      <i data-lucide="moon" class="w-4 h-4"></i>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-[8px] font-bold text-neutral-500 font-naskh">الاستقامة المتتالية</span>
+                      <h4 class="text-xs font-black text-neutral-900 dark:text-neutral-50 mt-0.5">0 يوم</h4>
+                      <p class="text-[6px] font-medium text-neutral-400 font-naskh">محاق (بداية جديدة)</p>
+                    </div>
+                  </div>
+
+                  <!-- Prayer tracker card -->
+                  <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-[22px] p-3 text-right flex items-center justify-between gap-2 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500">
+                      <i data-lucide="calendar" class="w-4 h-4"></i>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-[8px] font-bold text-neutral-500 font-naskh">تعقب الصلوات</span>
+                      <h4 class="text-xs font-black text-neutral-900 dark:text-neutral-50 mt-0.5">0 من 5</h4>
+                      <p class="text-[6px] font-medium text-neutral-400 font-naskh">صلاة مؤداة اليوم</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick access buttons list header -->
+              <div class="text-right pt-2">
+                <span class="text-[10px] font-black text-neutral-500 dark:text-neutral-555 font-naskh uppercase tracking-wide">الورد والتحصين السريع</span>
+              </div>
+
+              <!-- Quick action links list row -->
+              <div class="grid grid-cols-3 gap-2.5">
+                <button onclick="switchTab('shield', 'adhkar')" class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl py-3 flex flex-col items-center justify-center gap-1.5 hover:bg-neutral-100 dark:hover:bg-[#1b1b22] transition-all">
+                  <i data-lucide="sun" class="w-5 h-5 text-amber-500"></i>
+                  <span class="text-[9px] font-black font-naskh text-[#121214] dark:text-[#f4f4f5]">أذكار المسلم</span>
+                </button>
+                <button onclick="switchTab('shield', 'ruqyah')" class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl py-3 flex flex-col items-center justify-center gap-1.5 hover:bg-neutral-100 dark:hover:bg-[#1b1b22] transition-all">
+                  <i data-lucide="compass" class="w-5 h-5 text-emerald-500"></i>
+                  <span class="text-[9px] font-black font-naskh text-[#121214] dark:text-[#f4f4f5]">الرقية الشرعية</span>
+                </button>
+                <button onclick="switchTab('shield', 'radio')" class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl py-3 flex flex-col items-center justify-center gap-1.5 hover:bg-neutral-100 dark:hover:bg-[#1b1b22] transition-all">
+                  <i data-lucide="radio" class="w-5 h-5 text-indigo-500"></i>
+                  <span class="text-[9px] font-black font-naskh text-[#121214] dark:text-[#f4f4f5]">راديو القرآن</span>
+                </button>
+              </div>
             </div>
-            <div class="flex flex-col items-center text-neutral-400">
-              <i data-lucide="book-open" class="w-4 h-4"></i>
-              <span class="text-[7px] font-bold font-naskh mt-0.5">المصحف</span>
+
+            <!-- SCREEN 2: QURAN (المصحف) -->
+            <div id="screen-quran" class="screen hidden space-y-4">
+              <div class="space-y-1 text-right">
+                <h2 class="text-base font-extrabold font-naskh text-black dark:text-white">المصحف الشريف</h2>
+                <p class="text-[9px] text-neutral-500 dark:text-neutral-500 font-naskh">اقرأ آيات كتاب الله ميسرة مع الحفظ والبحث الفوري</p>
+              </div>
+
+              <!-- Simulator search input -->
+              <input 
+                type="text" 
+                placeholder="ابحث عن اسم السورة أو آية معيّنة..." 
+                disabled
+                class="w-full px-4 py-3 bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl text-[10px] font-bold font-naskh focus:outline-none cursor-not-allowed opacity-80"
+              />
+
+              <!-- Simulator Surah index list -->
+              <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+                <!-- Item 1 -->
+                <button onclick="openMockSurah(1, 'سُورَةُ الْفَاتِحَةِ', 'Al-Faatiha', 'مكية • 7 آية')" class="w-full bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3.5 flex items-center justify-between hover:bg-neutral-100/50 dark:hover:bg-[#1f1f26] transition-all">
+                  <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-[10px] font-black text-neutral-500 dark:text-neutral-400">1</span>
+                    <div class="text-right">
+                      <h4 class="text-[11px] font-black font-naskh text-neutral-800 dark:text-neutral-100">سُورَةُ الْفَاتِحَةِ</h4>
+                      <span class="text-[8px] font-bold text-neutral-400 dark:text-neutral-500 font-naskh">مكية • 7 آية</span>
+                    </div>
+                  </div>
+                  <span class="text-[9px] font-black text-neutral-400 dark:text-neutral-500 font-mono">Al-Faatiha</span>
+                </button>
+                
+                <!-- Item 2 -->
+                <button onclick="openMockSurah(2, 'سُورَةُ الْبَقَرَةِ', 'Al-Baqara', 'مدنية • 286 آية')" class="w-full bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3.5 flex items-center justify-between hover:bg-neutral-100/50 dark:hover:bg-[#1f1f26] transition-all">
+                  <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-[10px] font-black text-neutral-500 dark:text-neutral-400">2</span>
+                    <div class="text-right">
+                      <h4 class="text-[11px] font-black font-naskh text-neutral-800 dark:text-neutral-100">سُورَةُ الْبَقَرَةِ</h4>
+                      <span class="text-[8px] font-bold text-neutral-400 dark:text-neutral-500 font-naskh">مدنية • 286 آية</span>
+                    </div>
+                  </div>
+                  <span class="text-[9px] font-black text-neutral-400 dark:text-neutral-500 font-mono">Al-Baqara</span>
+                </button>
+
+                <!-- Item 3 -->
+                <button onclick="openMockSurah(3, 'سُورَةُ آلِ عِمْرَانَ', 'Aal-i-Imraan', 'مدنية • 200 آية')" class="w-full bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3.5 flex items-center justify-between hover:bg-neutral-100/50 dark:hover:bg-[#1f1f26] transition-all">
+                  <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-[10px] font-black text-neutral-500 dark:text-neutral-400">3</span>
+                    <div class="text-right">
+                      <h4 class="text-[11px] font-black font-naskh text-neutral-800 dark:text-neutral-100">سُورَةُ آلِ عِمْرَانَ</h4>
+                      <span class="text-[8px] font-bold text-neutral-400 dark:text-neutral-500 font-naskh">مدنية • 200 آية</span>
+                    </div>
+                  </div>
+                  <span class="text-[9px] font-black text-neutral-400 dark:text-neutral-500 font-mono">Aal-i-Imraan</span>
+                </button>
+
+                <!-- Item 4 -->
+                <button onclick="openMockSurah(4, 'سُورَةُ النِّسَاءِ', 'An-Nisaa', 'مدنية • 176 آية')" class="w-full bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-3.5 flex items-center justify-between hover:bg-neutral-100/50 dark:hover:bg-[#1f1f26] transition-all">
+                  <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-[10px] font-black text-neutral-500 dark:text-neutral-400">4</span>
+                    <div class="text-right">
+                      <h4 class="text-[11px] font-black font-naskh text-neutral-800 dark:text-neutral-100">سُورَةُ النِّسَاءِ</h4>
+                      <span class="text-[8px] font-bold text-neutral-400 dark:text-neutral-500 font-naskh">مدنية • 176 آية</span>
+                    </div>
+                  </div>
+                  <span class="text-[9px] font-black text-neutral-400 dark:text-neutral-500 font-mono">An-Nisaa</span>
+                </button>
+              </div>
             </div>
-            <div class="flex flex-col items-center text-neutral-400">
+
+            <!-- SCREEN 2.5: SURAH VIEWER (قارئ السورة) -->
+            <div id="screen-surah-viewer" class="screen hidden space-y-4">
+              <!-- Header Controls -->
+              <div class="flex justify-between items-center bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-xl px-3 py-2">
+                <button onclick="closeMockSurah()" class="px-2.5 py-1 text-[8px] font-black text-neutral-500 hover:text-black dark:hover:text-white bg-white dark:bg-[#0e0e10] border border-neutral-200 dark:border-neutral-800 rounded-lg font-naskh transition-all">
+                  العودة للفهرس
+                </button>
+                <div class="text-center">
+                  <h3 id="surah-title" class="text-[10px] font-black font-naskh">سُورَةُ الْفَاتِحَةِ</h3>
+                  <span id="surah-meta" class="text-[8px] font-bold text-neutral-400 dark:text-neutral-500 font-naskh">مكية • 7 آية</span>
+                </div>
+                <div class="w-14"></div> <!-- Align spacer -->
+              </div>
+
+              <!-- Scrollable Arabic Quran content -->
+              <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 shadow-sm text-right select-text">
+                <div id="surah-text-content" class="leading-relaxed tracking-wide font-amiri text-sm text-neutral-800 dark:text-neutral-100 text-justify" dir="rtl">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 3: SHIELD (الحصن والرقية) -->
+            <div id="screen-shield" class="screen hidden space-y-4">
+              <!-- Three Subtabs Selector -->
+              <div class="flex bg-neutral-100 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-xl p-1 gap-1 select-none">
+                <button id="subtab-btn-adhkar" onclick="switchShieldSubtab('adhkar')" class="flex-1 py-1.5 rounded-lg text-[9px] font-black font-naskh transition-all">أذكار اليوم</button>
+                <button id="subtab-btn-ruqyah" onclick="switchShieldSubtab('ruqyah')" class="flex-1 py-1.5 rounded-lg text-[9px] font-black font-naskh transition-all">الرقية الشرعية</button>
+                <button id="subtab-btn-radio" onclick="switchShieldSubtab('radio')" class="flex-1 py-1.5 rounded-lg text-[9px] font-black font-naskh transition-all">راديو مباشر</button>
+              </div>
+
+              <!-- SUBTAB VIEW: DAILY ADHKAR -->
+              <div id="shield-sub-adhkar" class="shield-subscreen space-y-4">
+                <!-- Categories selector pill row -->
+                <div class="grid grid-cols-4 gap-1.5 bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-xl p-1 text-center">
+                  <button id="pill-morning" onclick="switchAdhkarCategory('morning')" class="py-1 rounded-lg text-[8px] font-black font-naskh">الصباح</button>
+                  <button id="pill-evening" onclick="switchAdhkarCategory('evening')" class="py-1 rounded-lg text-[8px] font-black font-naskh">المساء</button>
+                  <button id="pill-sleep" onclick="switchAdhkarCategory('sleep')" class="py-1 rounded-lg text-[8px] font-black font-naskh">النوم</button>
+                  <button id="pill-study" onclick="switchAdhkarCategory('study')" class="py-1 rounded-lg text-[8px] font-black font-naskh">الدراسة</button>
+                </div>
+
+                <div class="flex justify-between items-center px-1">
+                  <span id="adhkar-list-title" class="text-[8px] font-black text-neutral-400 dark:text-neutral-500 font-naskh">أذكار طائفة: الصباح</span>
+                  <button onclick="resetMockDhikrProgress()" class="text-[8px] font-bold text-red-500 font-naskh hover:underline">تصفير التقدم بالقسم</button>
+                </div>
+
+                <!-- Adhkar list scrollbox -->
+                <div id="adhkar-cards-container" class="space-y-3.5 max-h-[300px] overflow-y-auto pr-1">
+                  <!-- Injected dynamically via JS -->
+                </div>
+              </div>
+
+              <!-- SUBTAB VIEW: RUQYAH -->
+              <div id="shield-sub-ruqyah" class="shield-subscreen hidden space-y-4">
+                <!-- Segment switcher: Written vs Audio -->
+                <div class="flex bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-xl p-1 gap-1 max-w-[240px] mx-auto">
+                  <button id="ruqyah-seg-written" onclick="switchRuqyahSegment('written')" class="flex-1 py-1 rounded-lg text-[8px] font-black font-naskh">الرقية المكتوبة</button>
+                  <button id="ruqyah-seg-audio" onclick="switchRuqyahSegment('audio')" class="flex-1 py-1 rounded-lg text-[8px] font-black font-naskh">الرقية المسموعة</button>
+                </div>
+
+                <!-- Ruqyah Segment: WRITTEN (67 Steps) -->
+                <div id="ruqyah-view-written" class="ruqyah-segment-screen space-y-4">
+                  <div class="flex justify-between items-center px-1">
+                    <span class="text-[8px] font-black text-neutral-400 font-naskh">بروتوكول الرقية والتحصين الكامل (67 خطوة)</span>
+                    <button onclick="resetMockRuqyahProgress()" class="text-[8px] font-bold text-red-500 font-naskh hover:underline">إعادة ضبط الكل</button>
+                  </div>
+                  
+                  <div class="space-y-3 max-h-[300px] overflow-y-auto pr-1">
+                    <!-- Step 1 -->
+                    <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 text-right space-y-2">
+                      <div class="flex justify-between items-center border-b border-neutral-100 dark:border-neutral-900 pb-1.5">
+                        <span class="text-[8px] font-black text-neutral-400">الخطوة 1 • التحضير والنية</span>
+                        <div class="w-4 h-4 rounded-full border border-neutral-350 dark:border-neutral-700 bg-white dark:bg-[#0e0e10]"></div>
+                      </div>
+                      <h4 class="text-[10px] font-black text-neutral-800 dark:text-neutral-50 font-naskh">الوضوء التام والنية القلبية الخالصة</h4>
+                      <p class="text-[9px] font-bold leading-relaxed text-neutral-750 dark:text-neutral-300 font-amiri">الوضوء التام واستحضار نية الاستشفاء واليقين التام بنفع كلام الله وإبطال مفعول كل أثر وحسد.</p>
+                      <div class="flex justify-between items-center pt-1.5">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3 text-neutral-400 cursor-pointer"></i>
+                        <button class="px-4 py-1.5 bg-black dark:bg-white text-white dark:text-black text-[9px] font-black rounded-xl">التكرار: 1 من 1</button>
+                      </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl p-4 text-right space-y-2">
+                      <div class="flex justify-between items-center border-b border-neutral-100 dark:border-neutral-900 pb-1.5">
+                        <span class="text-[8px] font-black text-neutral-400">الخطوة 2 • الفاتحة السبع المثاني</span>
+                        <div class="w-4 h-4 rounded-full border border-neutral-350 dark:border-neutral-700 bg-white dark:bg-[#0e0e10]"></div>
+                      </div>
+                      <h4 class="text-[10px] font-black text-neutral-800 dark:text-neutral-50 font-naskh">سورة الفاتحة (شافية الصدور)</h4>
+                      <p class="text-[9px] font-bold leading-relaxed text-neutral-750 dark:text-neutral-300 font-amiri">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ. الرَّحْمَنِ الرَّحِيمِ. مَالِكِ يَوْمِ الدِّينِ. إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ. اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ. صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ.</p>
+                      <div class="flex justify-between items-center pt-1.5">
+                        <i data-lucide="rotate-ccw" class="w-3 h-3 text-neutral-400 cursor-pointer"></i>
+                        <button class="px-4 py-1.5 bg-black dark:bg-white text-white dark:text-black text-[9px] font-black rounded-xl">التكرار: 7 من 7</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Ruqyah Segment: AUDIO PLAYER -->
+                <div id="ruqyah-view-audio" class="ruqyah-segment-screen hidden space-y-4">
+                  <!-- Player Card Mockup -->
+                  <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-5 text-center flex flex-col items-center gap-4 relative overflow-hidden transition-colors">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-black/5 dark:bg-white/5 rounded-full translate-x-6 -translate-y-6"></div>
+                    
+                    <div class="space-y-1">
+                      <span class="text-[8px] font-black text-neutral-400 font-naskh tracking-widest uppercase">تحصين النوم الصوتي</span>
+                      <h3 id="audio-track-title" class="text-xs font-black text-neutral-800 dark:text-neutral-50 font-naskh">سورة البقرة (الرقية)</h3>
+                      <p id="audio-track-detail" class="text-[8px] text-neutral-500 dark:text-neutral-400 font-naskh">طرد الشياطين والتحصين الشامل للمنزل</p>
+                    </div>
+
+                    <!-- Audio simulator visualization bars -->
+                    <div id="audio-wavebar" class="flex items-end justify-center gap-1.5 h-6 select-none opacity-50">
+                      <span class="w-1 bg-amber-500 rounded h-3 animate-pulse"></span>
+                      <span class="w-1 bg-amber-500 rounded h-5 animate-pulse"></span>
+                      <span class="w-1 bg-amber-500 rounded h-2 animate-pulse"></span>
+                      <span class="w-1 bg-amber-500 rounded h-4 animate-pulse"></span>
+                    </div>
+
+                    <!-- Progress slider track -->
+                    <div class="w-full space-y-1">
+                      <div class="flex justify-between items-center text-[8px] text-neutral-400 font-mono">
+                        <span id="audio-time">0:00</span>
+                        <span id="audio-dur">12:35</span>
+                      </div>
+                      <div class="w-full h-1 bg-neutral-200 dark:bg-neutral-800 rounded-lg overflow-hidden cursor-pointer">
+                        <div id="audio-progress" class="h-full bg-black dark:bg-white" style="width: 0%"></div>
+                      </div>
+                    </div>
+
+                    <!-- Controls layout row -->
+                    <div class="flex items-center gap-4">
+                      <i data-lucide="skip-back" class="w-4 h-4 text-neutral-400 cursor-pointer"></i>
+                      <button id="btn-play-recitation" onclick="toggleMockRecitation()" class="w-10 h-10 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center shadow-md active:scale-95 transition-all">
+                        <i id="play-recitation-icon" data-lucide="play" class="w-4 h-4 fill-current translate-x-0.5"></i>
+                      </button>
+                      <i data-lucide="skip-forward" class="w-4 h-4 text-neutral-400 cursor-pointer"></i>
+                    </div>
+                  </div>
+
+                  <!-- Mock playlist scroll area -->
+                  <div class="space-y-2 max-h-[160px] overflow-y-auto pr-1">
+                    <button onclick="playDemoTrack('سورة البقرة', 'طرد الشياطين والتحصين الشامل للمنزل', '12:35', 'https://server8.mp3quran.net/afs/002.mp3')" class="w-full text-right p-3 bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-xl flex items-center justify-between text-xs font-naskh">
+                      <div class="flex items-center gap-2">
+                        <span class="text-[8px] text-neutral-400 font-bold">01</span>
+                        <div class="text-right">
+                          <h4 class="text-[10px] font-black text-neutral-800 dark:text-neutral-100 font-naskh">سورة البقرة</h4>
+                          <span class="text-[7px] text-neutral-400 font-naskh">طرد الشياطين والتحصين الشامل للمنزل</span>
+                        </div>
+                      </div>
+                      <i data-lucide="play" class="w-3.5 h-3.5 text-neutral-400"></i>
+                    </button>
+
+                    <button onclick="playDemoTrack('سورة الإسراء', 'تحصين ووقاية النوم المأثورة', '8:42', 'https://server8.mp3quran.net/afs/017.mp3')" class="w-full text-right p-3 bg-neutral-50 dark:bg-[#16161a] border border-neutral-205 dark:border-neutral-800 rounded-xl flex items-center justify-between text-xs font-naskh">
+                      <div class="flex items-center gap-2">
+                        <span class="text-[8px] text-neutral-400 font-bold">02</span>
+                        <div class="text-right">
+                          <h4 class="text-[10px] font-black text-neutral-800 dark:text-neutral-100 font-naskh">سورة الإسراء</h4>
+                          <span class="text-[7px] text-neutral-400 font-naskh">تحصين ووقاية النوم المأثورة</span>
+                        </div>
+                      </div>
+                      <i data-lucide="play" class="w-3.5 h-3.5 text-neutral-400"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SUBTAB VIEW: LIVE RADIO -->
+              <div id="shield-sub-radio" class="shield-subscreen hidden space-y-4">
+                <div class="text-right space-y-0.5">
+                  <h3 class="text-[11px] font-black font-naskh text-black dark:text-white">المذياع الإسلامي المباشر</h3>
+                  <p class="text-[8px] text-neutral-400 font-naskh">استمع مباشرة إلى إذاعة القرآن والرقية والدروس 24 ساعة</p>
+                </div>
+
+                <!-- Active radio stream state card -->
+                <div id="active-radio-banner" class="hidden bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-3 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span id="active-radio-name" class="text-[9px] font-black text-neutral-800 dark:text-neutral-100 font-naskh">بث: إذاعة القرآن الكريم من القاهرة</span>
+                  </div>
+                  <button onclick="toggleMockRadio()" class="px-2 py-1 bg-black text-white dark:bg-white dark:text-black rounded text-[8px] font-black font-naskh">إيقاف</button>
+                </div>
+
+                <!-- Radio channels list scroll box -->
+                <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                  <!-- Cairo Radio -->
+                  <button onclick="playRadioChannel('إذاعة القرآن الكريم من القاهرة', 'البث المباشر لإذاعة القاهرة الرسمية 24/7', 'https://stream.radiojar.com/8s5u5tp7z8quv')" class="w-full text-right p-3.5 bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl flex items-center justify-between hover:bg-neutral-100/50 dark:hover:bg-[#1f1f26] transition-all">
+                    <div class="flex items-center gap-3">
+                      <i data-lucide="play" class="w-3.5 h-3.5 text-neutral-400"></i>
+                      <div class="text-right">
+                        <h4 class="text-[10px] font-black text-neutral-800 dark:text-neutral-100 font-naskh">إذاعة القرآن الكريم من القاهرة</h4>
+                        <span class="text-[7px] text-neutral-400 dark:text-neutral-500 font-naskh">البث المباشر لإذاعة القاهرة الرسمية 24/7</span>
+                      </div>
+                    </div>
+                    <i data-lucide="radio" class="w-4 h-4 text-neutral-400"></i>
+                  </button>
+
+                  <!-- Riyadh Radio -->
+                  <button onclick="playRadioChannel('إذاعة القرآن الكريم من الرياض', 'البث المباشر الرياض والمستجدات الحرمين', 'https://radiotafseer.com/radio/saudi.mp3')" class="w-full text-right p-3.5 bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl flex items-center justify-between hover:bg-neutral-100/50 dark:hover:bg-[#1f1f26] transition-all">
+                    <div class="flex items-center gap-3">
+                      <i data-lucide="play" class="w-3.5 h-3.5 text-neutral-400"></i>
+                      <div class="text-right">
+                        <h4 class="text-[10px] font-black text-neutral-800 dark:text-neutral-100 font-naskh">إذاعة القرآن الكريم من الرياض</h4>
+                        <span class="text-[7px] text-neutral-400 dark:text-neutral-500 font-naskh">البث المباشر الرياض والمستجدات الحرمين</span>
+                      </div>
+                    </div>
+                    <i data-lucide="radio" class="w-4 h-4 text-neutral-400"></i>
+                  </button>
+
+                  <!-- Ruqyah Radio -->
+                  <button onclick="playRadioChannel('إذاعة الرقية الشرعية المباشرة', 'تلاوات الرقية المتواصلة لشفاء البدن والروح', 'https://qurango.net/radio/ruqiah')" class="w-full text-right p-3.5 bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-2xl flex items-center justify-between hover:bg-neutral-100/50 dark:hover:bg-[#1f1f26] transition-all">
+                    <div class="flex items-center gap-3">
+                      <i data-lucide="play" class="w-3.5 h-3.5 text-neutral-400"></i>
+                      <div class="text-right">
+                        <h4 class="text-[10px] font-black text-neutral-800 dark:text-neutral-100 font-naskh">إذاعة الرقية الشرعية المباشرة</h4>
+                        <span class="text-[7px] text-neutral-400 dark:text-neutral-500 font-naskh">تلاوات الرقية الشرعية المتواصلة لشفاء البدن والروح</span>
+                      </div>
+                    </div>
+                    <i data-lucide="radio" class="w-4 h-4 text-neutral-400"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 4: SERVICES (العبادات والخدمات) -->
+            <div id="screen-services" class="screen hidden space-y-4">
+              <div class="space-y-1 text-right">
+                <h2 class="text-base font-extrabold font-naskh text-black dark:text-white">الخدمات الإضافية</h2>
+                <p class="text-[9px] text-neutral-500 dark:text-neutral-500 font-naskh">مسبحة التسبيح التفاعلية وإعدادات التطبيق المخصصة</p>
+              </div>
+
+              <!-- Interactive Tasbih counter card -->
+              <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-[28px] p-5 text-center flex flex-col items-center gap-4 transition-colors">
+                <span class="text-[9px] font-black text-neutral-400 font-naskh tracking-widest uppercase">مسبحة التسبيح التفاعلية</span>
+                
+                <!-- Main Tasbih Clickable Circle -->
+                <button onclick="incrementMockTasbih()" class="w-28 h-28 rounded-full border-4 border-emerald-500 bg-white dark:bg-[#0e0e10] flex flex-col items-center justify-center shadow-lg active:scale-95 transition-all outline-none">
+                  <span id="tasbih-num" class="text-3xl font-black font-sans text-neutral-900 dark:text-neutral-50">0</span>
+                  <span id="tasbih-target-label" class="text-[8px] font-bold text-neutral-400 font-naskh mt-0.5">الهدف: 33</span>
+                </button>
+
+                <div class="flex items-center gap-3 w-full justify-center">
+                  <button onclick="switchMockTasbihTarget(33)" class="px-2.5 py-1 bg-neutral-100 dark:bg-neutral-850 text-neutral-800 dark:text-neutral-200 text-[8px] font-black rounded-lg">الهدف 33</button>
+                  <button onclick="switchMockTasbihTarget(99)" class="px-2.5 py-1 bg-neutral-100 dark:bg-neutral-850 text-neutral-800 dark:text-neutral-200 text-[8px] font-black rounded-lg">الهدف 99</button>
+                  <button onclick="resetMockTasbih()" class="p-1 text-red-500 hover:scale-105 active:scale-90 transition-transform"><i data-lucide="rotate-ccw" class="w-4 h-4"></i></button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Navigation Bar (Matching App screenshots) -->
+          <div class="p-3 bg-neutral-50 dark:bg-[#16161a] border-t border-neutral-100 dark:border-neutral-900 flex justify-around items-center z-20 transition-colors">
+            
+            <!-- Button Services -->
+            <button id="nav-btn-services" onclick="switchTab('services')" class="flex flex-col items-center text-neutral-400 hover:text-black dark:hover:text-white transition-all py-1 px-2.5 rounded-xl">
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+              <span class="text-[8px] font-black font-naskh mt-0.5">العبادات</span>
+            </button>
+
+            <!-- Button Shield -->
+            <button id="nav-btn-shield" onclick="switchTab('shield')" class="flex flex-col items-center text-neutral-400 hover:text-black dark:hover:text-white transition-all py-1 px-2.5 rounded-xl">
               <i data-lucide="compass" class="w-4 h-4"></i>
-              <span class="text-[7px] font-bold font-naskh mt-0.5">الحصن</span>
-            </div>
-            <div class="flex flex-col items-center text-neutral-400">
-              <i data-lucide="settings" class="w-4 h-4"></i>
-              <span class="text-[7px] font-bold font-naskh mt-0.5">الضبط</span>
-            </div>
+              <span class="text-[8px] font-black font-naskh mt-0.5">الحصن</span>
+            </button>
+
+            <!-- Button Quran -->
+            <button id="nav-btn-quran" onclick="switchTab('quran')" class="flex flex-col items-center text-neutral-400 hover:text-black dark:hover:text-white transition-all py-1 px-2.5 rounded-xl">
+              <i data-lucide="book-open" class="w-4 h-4"></i>
+              <span class="text-[8px] font-black font-naskh mt-0.5">المصحف</span>
+            </button>
+
+            <!-- Button Home -->
+            <button id="nav-btn-home" onclick="switchTab('home')" class="flex flex-col items-center text-neutral-400 hover:text-black dark:hover:text-white transition-all py-1 px-2.5 rounded-xl">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span class="text-[8px] font-black font-naskh mt-0.5">الرئيسية</span>
+            </button>
+            
           </div>
-          
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- INTERACTIVE PLAYBACK SECTION (Exact App Card styles) -->
-  <section id="demo" class="max-w-4xl mx-auto px-6 py-16 text-center space-y-8">
-    <div class="space-y-2">
-      <h3 class="text-2xl md:text-3xl font-extrabold font-naskh text-black dark:text-white">جرب تنبيه ومعاينة الأذان التفاعلية</h3>
-      <p class="text-xs text-neutral-600 dark:text-neutral-400 font-naskh max-w-xl mx-auto">
-        قم باختيار النغمة الحسابية المتكررة 12 مرة أو حدد مؤذنك المفضل واستمع للمعاينة الحية للمنبه البرودكشن مباشرة داخل المتصفح.
-      </p>
-    </div>
-
-    <!-- Alarm Chime Card (Matching App dashboard card styles) -->
-    <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 md:p-8 max-w-lg mx-auto shadow-sm text-right space-y-6">
-      
-      <!-- Selector List -->
-      <div class="space-y-3">
-        <!-- Loop Option Beep -->
-        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-white dark:bg-[#0e0e10] border border-neutral-150 dark:border-neutral-850 hover:scale-[1.01] transition-transform">
-          <button onclick="selectAthan('beep')" class="flex items-center gap-3 text-right flex-1 focus:outline-none clickable">
-            <div id="radio-beep" class="w-4 h-4 rounded-full border border-emerald-500 bg-emerald-500/10 flex items-center justify-center">
-              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
-            </div>
-            <span class="text-xs font-black text-emerald-500 font-naskh">نغمة تنبيه رقمية متصاعدة (18.4 ثانية)</span>
-          </button>
-          <button onclick="togglePreview('beep', null)" class="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 active:scale-95 transition-all clickable">
-            <i id="btn-beep" data-lucide="play" class="w-4 h-4 fill-current"></i>
-          </button>
-        </div>
-
-        <!-- Makkah Option -->
-        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-white dark:bg-[#0e0e10] border border-neutral-150 dark:border-neutral-850 hover:scale-[1.01] transition-transform">
-          <button onclick="selectAthan('azan1')" class="flex items-center gap-3 text-right flex-1 focus:outline-none clickable">
-            <div id="radio-azan1" class="w-4 h-4 rounded-full border border-neutral-300 dark:border-neutral-700 flex items-center justify-center">
-              <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
-            </div>
-            <span id="label-azan1" class="text-xs font-bold text-neutral-600 dark:text-neutral-300 font-naskh">أذان الحرم المكي الشريف</span>
-          </button>
-          <button onclick="togglePreview('azan1', 'https://www.islamcan.com/audio/adhan/azan1.mp3')" class="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 active:scale-95 transition-all clickable">
-            <i id="btn-azan1" data-lucide="play" class="w-4 h-4 fill-current"></i>
-          </button>
-        </div>
-
-        <!-- Abdulbasit Option -->
-        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-white dark:bg-[#0e0e10] border border-neutral-150 dark:border-neutral-850 hover:scale-[1.01] transition-transform">
-          <button onclick="selectAthan('azan3')" class="flex items-center gap-3 text-right flex-1 focus:outline-none clickable">
-            <div id="radio-azan3" class="w-4 h-4 rounded-full border border-neutral-300 dark:border-neutral-700 flex items-center justify-center">
-              <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
-            </div>
-            <span id="label-azan3" class="text-xs font-bold text-neutral-600 dark:text-neutral-300 font-naskh">أذان الشيخ عبد الباسط عبد الصمد</span>
-          </button>
-          <button onclick="togglePreview('azan3', 'https://www.islamcan.com/audio/adhan/azan3.mp3')" class="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 active:scale-95 transition-all clickable">
-            <i id="btn-azan3" data-lucide="play" class="w-4 h-4 fill-current"></i>
-          </button>
         </div>
       </div>
 
     </div>
-  </section>
+  </main>
 
-  <!-- KEY FEATURES SHOWCASE (Matching App Grid list styles) -->
-  <section class="max-w-6xl mx-auto px-6 py-16 border-t border-neutral-100 dark:border-neutral-900 space-y-12">
-    <div class="text-center space-y-2">
-      <h3 class="text-2xl md:text-3xl font-extrabold font-naskh text-black dark:text-white">مميزات مصممة بجودة متناهية وبطرق إبداعية</h3>
-      <p class="text-xs text-neutral-600 dark:text-neutral-450 font-naskh max-w-lg mx-auto">
-        تطبيق حصن المسلم غني بالخواص والمميزات الذكية التي تم بناؤها وتنقيتها خصيصاً لتفوق التطلعات.
-      </p>
-    </div>
-
-    <!-- 8 Features Grid (Styled exactly like App cards) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      
-      <!-- Card 1 -->
-      <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 text-right space-y-4 hover:border-amber-500/30 transition-all hover:scale-[1.02] shadow-sm">
-        <div class="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-amber-500">
-          <i data-lucide="radio" class="w-4 h-4"></i>
-        </div>
-        <h4 class="text-sm font-black text-black dark:text-white font-naskh">مشغل خلفية مستقر تماماً</h4>
-        <p class="text-xs text-neutral-550 dark:text-neutral-400 font-naskh leading-relaxed">
-          يتكامل التطبيق مع الأندرويد الأصلي ليعطيك تشغيلاً صوتياً خلفياً مستمراً للأذكار والرقية لمدة تتجاوز 8 ساعات دون انقطاع.
-        </p>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 text-right space-y-4 hover:border-amber-500/30 transition-all hover:scale-[1.02] shadow-sm">
-        <div class="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-amber-500">
-          <i data-lucide="book-open" class="w-4 h-4"></i>
-        </div>
-        <h4 class="text-sm font-black text-black dark:text-white font-naskh">مصحف كامل أوفلاين وسريع</h4>
-        <p class="text-xs text-neutral-550 dark:text-neutral-400 font-naskh leading-relaxed">
-          تصفح القرآن الكريم كاملاً وابحث بالآية أو السورة باستخدام محرك البحث الذكي المجرّد من التشكيل لسرعة البحث والدقة.
-        </p>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 text-right space-y-4 hover:border-amber-500/30 transition-all hover:scale-[1.02] shadow-sm">
-        <div class="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-amber-500">
-          <i data-lucide="bell" class="w-4 h-4"></i>
-        </div>
-        <h4 class="text-sm font-black text-black dark:text-white font-naskh">تنبيهات الأذان والنظام</h4>
-        <p class="text-xs text-neutral-550 dark:text-neutral-400 font-naskh leading-relaxed">
-          تنبيهات منبثقة (Pop-up Notifications) متكاملة على شاشتك لحماية مواقيت صلاتك مع نغمات حصرية من الحرمين الشريفين.
-        </p>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 text-right space-y-4 hover:border-amber-500/30 transition-all hover:scale-[1.02] shadow-sm">
-        <div class="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-amber-500">
-          <i data-lucide="layout" class="w-4 h-4"></i>
-        </div>
-        <h4 class="text-sm font-black text-black dark:text-white font-naskh">ويدجت الشاشة الرئيسية</h4>
-        <p class="text-xs text-neutral-550 dark:text-neutral-400 font-naskh leading-relaxed">
-          ويدجت دائري ممتاز يحاكي تصميمات iOS الفاخرة يظهر الصلاة القادمة والمتبقي لها لمتابعتها طوال الوقت بلمحة سريعة.
-        </p>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 text-right space-y-4 hover:border-amber-500/30 transition-all hover:scale-[1.02] shadow-sm">
-        <div class="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-amber-500">
-          <i data-lucide="activity" class="w-4 h-4"></i>
-        </div>
-        <h4 class="text-sm font-black text-black dark:text-white font-naskh">مسبحة التسبيح التفاعلية</h4>
-        <p class="text-xs text-neutral-550 dark:text-neutral-400 font-naskh leading-relaxed">
-          عداد تسبيح ذكي وتفاعلي بالكامل يدعم الاهتزازات التفاعلية (Haptic Feedback) ومستويات إنجاز يومية للمتابعة.
-        </p>
-      </div>
-
-      <!-- Card 6 -->
-      <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 text-right space-y-4 hover:border-amber-500/30 transition-all hover:scale-[1.02] shadow-sm">
-        <div class="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-amber-500">
-          <i data-lucide="calendar" class="w-4 h-4"></i>
-        </div>
-        <h4 class="text-sm font-black text-black dark:text-white font-naskh">التقويم الهجري والمحوّل</h4>
-        <p class="text-xs text-neutral-550 dark:text-neutral-400 font-naskh leading-relaxed">
-          تتبع الأيام الهجرية والمناسبات الإسلامية وحوّل بين التاريخ الميلادي والهجري بدقة فائقة وبكبسة زر واحدة.
-        </p>
-      </div>
-
-      <!-- Card 7 -->
-      <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 text-right space-y-4 hover:border-amber-500/30 transition-all hover:scale-[1.02] shadow-sm">
-        <div class="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-amber-500">
-          <i data-lucide="sparkles" class="w-4 h-4"></i>
-        </div>
-        <h4 class="text-sm font-black text-black dark:text-white font-naskh">دليل العلاج بالرقية الشرعية</h4>
-        <p class="text-xs text-neutral-550 dark:text-neutral-400 font-naskh leading-relaxed">
-          دليل إرشادي شامل وخطوات مفصلة للرقية الشرعية وعلاج السحر المأكول، سحر التفريق، وسحر القرين بالأوراد والآيات.
-        </p>
-      </div>
-
-      <!-- Card 8 -->
-      <div class="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 text-right space-y-4 hover:border-amber-500/30 transition-all hover:scale-[1.02] shadow-sm">
-        <div class="w-9 h-9 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-amber-500">
-          <i data-lucide="flame" class="w-4 h-4"></i>
-        </div>
-        <h4 class="text-sm font-black text-black dark:text-white font-naskh">تتبع العادات والالتزام</h4>
-        <p class="text-xs text-neutral-550 dark:text-neutral-400 font-naskh leading-relaxed">
-          نظام تتبع أيام النشاط المتتالية (Habits Streak) لرفع مستوى التزامك بالأذكار والصلوات والعبادات اليومية.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- INSTALLATION SECTION -->
-  <section id="download" class="max-w-4xl mx-auto px-6 py-16 text-center space-y-8 border-t border-neutral-100 dark:border-neutral-900">
-    <div class="space-y-2">
-      <h3 class="text-2xl md:text-3xl font-extrabold font-naskh text-black dark:text-white">ابدأ تشغيل حصن المسلم الآن</h3>
-      <p class="text-xs text-neutral-600 dark:text-neutral-450 font-naskh max-w-xl mx-auto">
-        قم بتحميل حزمة تثبيت التطبيق الأصلية للأندرويد مباشرة، أو اطلع على الكود البرمجي الكامل والمفتوح المصدر على جيت هب.
-      </p>
-    </div>
-
-    <!-- Download Buttons (Matching App styles) -->
-    <div class="flex flex-col sm:flex-row justify-center gap-4 max-w-md mx-auto">
-      <a href="https://github.com/Blue-Sonic/Hisn/releases/download/v1.0.0/Hisn.apk" class="flex-1 py-4 bg-emerald-600 text-white dark:bg-emerald-500 dark:text-black rounded-2xl font-black text-xs font-naskh transition-all hover:scale-[1.02] shadow-sm hover:opacity-90 active:scale-95 clickable flex items-center justify-center gap-2">
-        <i data-lucide="download" class="w-4.5 h-4.5"></i>
-        تنزيل حزمة APK المباشرة
-      </a>
-      <a href="https://github.com/Blue-Sonic/Hisn" target="_blank" class="flex-1 py-4 bg-neutral-50 dark:bg-[#16161a] border border-neutral-150 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 rounded-2xl font-black text-xs font-naskh transition-all clickable active:scale-95 border border-neutral-200 dark:border-neutral-800 flex items-center justify-center gap-2">
-        <i data-lucide="github" class="w-4.5 h-4.5"></i>
-        عرض الكود على GitHub
-      </a>
-    </div>
-  </section>
+  <!-- HTML5 Audio Node for live streams -->
+  <audio id="simulator-audio" class="hidden" preload="none"></audio>
 
   <!-- FOOTER -->
-  <footer class="bg-neutral-50 dark:bg-[#16161a] border-t border-neutral-100 dark:border-neutral-900 py-10 text-center text-[10px] text-neutral-400 dark:text-neutral-500 font-naskh space-y-4">
-    <div class="max-w-6xl mx-auto px-6 space-y-2">
-      <!-- Credit to the designer styled as custom alert dialog in App -->
-      <div class="flex flex-col items-center justify-center gap-2 max-w-md mx-auto">
-        <div class="bg-amber-500/5 dark:bg-amber-500/5 border border-amber-500/20 dark:border-amber-500/10 rounded-2xl p-4 flex items-center justify-center shadow-sm w-full animate-pulse-subtle">
-          <span class="text-xs font-black text-amber-700 dark:text-amber-450 font-naskh">
-            تم التصميم الإبداعي والتطوير الاحترافي بواسطة المهندس المصمم / Blue-Sonic
-          </span>
-        </div>
-      </div>
-      <p class="pt-6">تطبيق حصن المسلم © 2026. جميع الحقوق محفوظة ومتاحة للاستخدام الشخصي المجاني.</p>
+  <footer class="bg-neutral-100 dark:bg-[#16161a] border-t border-neutral-200 dark:border-neutral-900 py-6 text-center text-[10px] text-neutral-400 dark:text-neutral-500 font-naskh">
+    <div class="max-w-6xl mx-auto px-6">
+      <p>تطبيق حسين / Hisn © 2026. تم التطوير والتحسين بكل حب لخدمة المسلمين في كل مكان.</p>
     </div>
   </footer>
 
-  <!-- Web Audio Playback Script -->
+  <!-- App Simulation Logic -->
   <script>
-    let activeAthan = 'beep';
-    let audioCtx = null;
-    let previewAudio = null;
-    let currentPreviewId = null;
-    let beepTimeoutId = null;
-
-    // Theme Switcher (Matching App implementation)
+    // Theme Mode Toggle
     function toggleTheme() {
-      const html = document.documentElement;
-      const icon = document.getElementById('theme-icon');
+      const htmlClass = document.documentElement.classList;
+      const themeIcon = document.getElementById('theme-btn-icon');
       
-      if (html.classList.contains('dark')) {
-        html.classList.remove('dark');
-        html.classList.add('light');
-        icon.setAttribute('data-lucide', 'moon');
+      if (htmlClass.contains('dark')) {
+        htmlClass.remove('dark');
+        themeIcon.setAttribute('data-lucide', 'moon');
       } else {
-        html.classList.remove('light');
-        html.classList.add('dark');
-        icon.setAttribute('data-lucide', 'sun');
+        htmlClass.add('dark');
+        themeIcon.setAttribute('data-lucide', 'sun');
       }
       lucide.createIcons();
     }
 
-    // Select Athan option
-    function selectAthan(id) {
-      // Reset radio styles
-      ['beep', 'azan1', 'azan3'].forEach(opt => {
-        const radio = document.getElementById(`radio-${opt}`);
-        const label = document.getElementById(`label-${opt}`);
-        
-        radio.className = "w-4 h-4 rounded-full border border-neutral-300 dark:border-neutral-700 flex items-center justify-center";
-        radio.innerHTML = '<div class="w-2 h-2 rounded-full bg-transparent"></div>';
-        
-        if (label) {
-          label.className = "text-xs font-bold text-neutral-600 dark:text-neutral-300 font-naskh";
-        }
+    // Tab Navigation logic
+    let activeTabId = 'home';
+    function switchTab(tabId, subtabId = null) {
+      // Hide all screens
+      document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+      
+      // Reset navigation button colors
+      document.querySelectorAll('[id^="nav-btn-"]').forEach(btn => {
+        btn.classList.remove('text-emerald-500', 'dark:text-emerald-400', 'font-bold');
+        btn.classList.add('text-neutral-400');
       });
 
-      // Set selected radio styles
-      const activeRadio = document.getElementById(`radio-${id}`);
-      const activeLabel = document.getElementById(`label-${id}`);
-      
-      activeRadio.className = "w-4 h-4 rounded-full border border-emerald-500 bg-emerald-500/10 flex items-center justify-center";
-      activeRadio.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>';
-      
-      if (activeLabel) {
-        activeLabel.className = "text-xs font-black text-emerald-500 font-naskh";
+      // Show selected screen
+      const targetScreen = document.getElementById(`screen-${tabId}`);
+      if (targetScreen) targetScreen.classList.remove('hidden');
+
+      // Highlight active nav button
+      const activeNav = document.getElementById(`nav-btn-${tabId}`);
+      if (activeNav) {
+        activeNav.classList.remove('text-neutral-400');
+        activeNav.classList.add('text-emerald-500', 'dark:text-emerald-400', 'font-bold');
       }
-      
-      activeAthan = id;
+
+      activeTabId = tabId;
+
+      // Handle subtab navigation if provided
+      if (subtabId) {
+        switchShieldSubtab(subtabId);
+      }
     }
 
-    // Play synthesized loop or audio URL
-    function togglePreview(id, url) {
-      const playIcon = document.getElementById(`btn-${id}`);
+    // Shield Subtabs Toggle
+    let activeShieldSubtabId = 'adhkar';
+    function switchShieldSubtab(subtabId) {
+      document.querySelectorAll('.shield-subscreen').forEach(scr => scr.classList.add('hidden'));
       
-      if (currentPreviewId === id) {
-        // Stop current
-        stopAllPreviews();
+      document.querySelectorAll('[id^="subtab-btn-"]').forEach(btn => {
+        btn.classList.remove('bg-white', 'dark:bg-[#0e0e10]', 'text-black', 'dark:text-white', 'shadow-sm', 'border', 'border-neutral-200/50', 'dark:border-neutral-800/50');
+        btn.classList.add('text-neutral-500');
+      });
+
+      const targetSub = document.getElementById(`shield-sub-${subtabId}`);
+      if (targetSub) targetSub.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`subtab-btn-${subtabId}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-neutral-500');
+        activeBtn.classList.add('bg-white', 'dark:bg-[#0e0e10]', 'text-black', 'dark:text-white', 'shadow-sm', 'border', 'border-neutral-200/50', 'dark:border-neutral-800/50');
+      }
+
+      activeShieldSubtabId = subtabId;
+    }
+
+    // Adhkar category pills
+    let activeAdhkarPill = 'morning';
+    const adhkarMockData = {
+      morning: [
+        { id: 'm1', title: '1. التحصين النبوي الشديد (حرق الجان)', text: 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ الَّتِي لَا يُجَاوِزُهُنَّ بَرٌّ وَلَا فَاجِرٌ مِنْ شَرِّ مَا خَلَقَ، وَذَرَأَ، وَبَرَأَ، وَمِنْ شَرِّ مَا يَنْزِلُ مِنَ السَّمَاءِ، وَمِنْ شَرِّ مَا يَعْرُجُ فِيهَا، وَمِنْ شَرِّ مَا ذَرَأَ فِي الْأَرْضِ، وَمِنْ شَرِّ مَا يَخْرُجُ مِنْهَا، وَمِنْ شَرِّ فِتَنِ اللَّيْلِ وَالنَّهَارِ، وَمِنْ شَرِّ كُلِّ طَارِقٍ إِلَّا طَارِقًا يَطْرُقُ بِخَيْرٍ يَا رَحْمَنُ.', reward: 'يطفئ نار الشياطين ويهلك الجان المترصد.', count: 1 },
+        { id: 'm2', title: '2. آية الكرسي', text: 'اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ.', reward: 'حارس من الشياطين ولا يقربك شيطان حتى تصبح.', count: 1 }
+      ],
+      evening: [
+        { id: 'e1', title: '1. رضيت بالله رباً', text: 'رَضِيتُ بِاللَّهِ رَبَّاً، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيَّاً.', reward: 'كان حقاً على الله أن يرضيه يوم القيامة.', count: 3 },
+        { id: 'e2', title: '2. أمسينا وأمسى الملك لله', text: 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ.', reward: 'طلب خير ما في الليلة والاستعاذة من شرها.', count: 1 }
+      ],
+      sleep: [
+        { id: 's1', title: '1. باسمك ربي وضعت جنبي', text: 'بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، فَإِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا، بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ.', reward: 'وقاية وحفظ للروح أثناء المنام.', count: 1 }
+      ],
+      study: [
+        { id: 'st1', title: '1. ربي زدني علماً', text: 'رَّبِّ زِدْنِي عِلْمًا وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي يَفْقَهُوا قَوْلِي.', reward: 'تيسير الفهم وتفتيح خلايا العقل للمذاكرة.', count: 3 }
+      ]
+    };
+
+    let itemCounts = {};
+    let completedItems = {};
+
+    function switchAdhkarCategory(pillId) {
+      activeAdhkarPill = pillId;
+      
+      document.querySelectorAll('[id^="pill-"]').forEach(p => {
+        p.classList.remove('bg-black', 'dark:bg-white', 'text-white', 'dark:text-black', 'font-black');
+        p.classList.add('text-neutral-500');
+      });
+
+      const activeP = document.getElementById(`pill-${pillId}`);
+      if (activeP) {
+        activeP.classList.remove('text-neutral-500');
+        activeP.classList.add('bg-black', 'dark:bg-white', 'text-white', 'dark:text-black', 'font-black');
+      }
+
+      const labelMap = { morning: 'الصباح', evening: 'المساء', sleep: 'النوم', study: 'الدراسة' };
+      document.getElementById('adhkar-list-title').innerText = `أذكار طائفة: ${labelMap[pillId]}`;
+
+      renderAdhkarList();
+    }
+
+    function renderAdhkarList() {
+      const container = document.getElementById('adhkar-cards-container');
+      container.innerHTML = '';
+      
+      const items = adhkarMockData[activeAdhkarPill] || [];
+      items.forEach(item => {
+        const isDone = !!completedItems[item.id];
+        const remaining = itemCounts[item.id] !== undefined ? itemCounts[item.id] : item.count;
+        
+        const card = document.createElement('div');
+        card.className = `bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-5 text-right space-y-3.5 transition-all ${isDone ? 'opacity-60 grayscale-[40%]' : ''}`;
+        
+        card.innerHTML = `
+          <h4 class="text-xs font-black text-neutral-800 dark:text-neutral-50 font-naskh leading-relaxed">${item.title}</h4>
+          <p class="text-xs font-bold leading-loose text-neutral-800 dark:text-neutral-200 font-amiri select-text">${item.text}</p>
+          <div class="p-3 bg-neutral-100/50 dark:bg-[#0e0e10]/50 border border-neutral-100 dark:border-neutral-900 rounded-2xl text-[9px] font-bold text-neutral-500 dark:text-neutral-400 font-naskh leading-relaxed">
+            الأثر/الفضل: ${item.reward}
+          </div>
+          <div class="flex justify-between items-center pt-2">
+            <button onclick="resetItem('${item.id}')" class="p-2 text-neutral-400 hover:text-red-500 transition-colors">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+            </button>
+            <button onclick="tapItem('${item.id}', ${item.count})" ${isDone ? 'disabled' : ''} class="px-6 py-2 rounded-2xl font-sans text-xs font-black flex items-center gap-2 transition-all shadow-sm border ${isDone ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-450' : 'bg-black dark:bg-white border-black dark:border-white text-white dark:text-black'}">
+              ${isDone ? '✓ تم الأثر' : `التكرار: ${remaining} من ${item.count}`}
+            </button>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function tapItem(itemId, total) {
+      const current = itemCounts[itemId] !== undefined ? itemCounts[itemId] : total;
+      if (current <= 1) {
+        completedItems[itemId] = true;
+        itemCounts[itemId] = 0;
+      } else {
+        itemCounts[itemId] = current - 1;
+      }
+      renderAdhkarList();
+    }
+
+    function resetItem(itemId) {
+      delete completedItems[itemId];
+      delete itemCounts[itemId];
+      renderAdhkarList();
+    }
+
+    function resetMockDhikrProgress() {
+      const items = adhkarMockData[activeAdhkarPill] || [];
+      items.forEach(item => {
+        delete completedItems[item.id];
+        delete itemCounts[item.id];
+      });
+      renderAdhkarList();
+    }
+
+    // Ruqyah segment switcher
+    let activeRuqyahSegId = 'written';
+    function switchRuqyahSegment(segId) {
+      document.querySelectorAll('.ruqyah-segment-screen').forEach(scr => scr.classList.add('hidden'));
+      
+      document.querySelectorAll('[id^="ruqyah-seg-"]').forEach(btn => {
+        btn.classList.remove('bg-white', 'dark:bg-[#0e0e10]', 'text-black', 'dark:text-white', 'shadow-sm', 'border', 'border-neutral-200/50', 'dark:border-neutral-800/50');
+        btn.classList.add('text-neutral-500');
+      });
+
+      const targetSeg = document.getElementById(`ruqyah-view-${segId}`);
+      if (targetSeg) targetSeg.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`ruqyah-seg-${segId}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-neutral-500');
+        activeBtn.classList.add('bg-white', 'dark:bg-[#0e0e10]', 'text-black', 'dark:text-white', 'shadow-sm', 'border', 'border-neutral-200/50', 'dark:border-neutral-800/50');
+      }
+
+      activeRuqyahSegId = segId;
+    }
+
+    // Quran Mock Surah data
+    const mockSurahTexts = {
+      1: `بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)`,
+      2: `بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. الم (1) ذَلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ هُدًى لِلْمُتَّقِينَ (2) الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنْفِقُونَ (3) وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنْزِلَ إِلَيْكَ وَمَا أُنْزِلَ مِنْ قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ (4) أُولَئِكَ عَلَى هُدًى مِنْ رَبِّهِمْ وَأُولَئِكَ هُمُ الْمُفْلِحُونَ (5)`,
+      3: `بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. الم (1) اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ (2) نَزَّلَ عَلَيْكَ الْكِتَابَ بِالْحَقِّ مُصَدِّقًا لِمَا بَيْنَ يَدَيْهِ وَأَنْزَلَ التَّوْرَاةَ وَالْإِنْجِيلَ (3) مِنْ قَبْلُ هُدًى لِلنَّاسِ وَأَنْزَلَ الْفُرْقَانَ (4)`,
+      4: `بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. يَا أَيُّهَا النَّاسُ اتَّقُوا رَبَّكُمُ الَّذِي خَلَقَكُمْ مِنْ نَفْسٍ وَاحِدَةٍ وَخَلَقَ مِنْهَا زَوْجَهَا وَبَثَّ مِنْهُمَا رِجَالًا كَثِيرًا وَنِسَاءً وَاتَّقُوا اللَّهَ الَّذِي تَسَاءَلُونَ بِهِ وَالْأَرْحَامَ إِنَّ اللَّهَ كَانَ عَلَيْكُمْ رَقِيبًا (1)`
+    };
+
+    function openMockSurah(num, name, engName, meta) {
+      document.getElementById('screen-quran').classList.add('hidden');
+      document.getElementById('screen-surah-viewer').classList.remove('hidden');
+      
+      document.getElementById('surah-title').innerText = name;
+      document.getElementById('surah-meta').innerText = meta;
+      
+      const textContent = mockSurahTexts[num] || "آيات السورة الكريمة غير متوفرة في العرض التجريبي.";
+      document.getElementById('surah-text-content').innerText = textContent;
+    }
+
+    function closeMockSurah() {
+      document.getElementById('screen-surah-viewer').classList.add('hidden');
+      document.getElementById('screen-quran').classList.remove('hidden');
+    }
+
+    // Audio Playback Node logic
+    const audioNode = document.getElementById('simulator-audio');
+    let isPlayingAudio = false;
+    let audioType = null; // 'radio' or 'recitation'
+    let activeStreamUrl = '';
+
+    function playRadioChannel(name, desc, streamUrl) {
+      if (isPlayingAudio && activeStreamUrl === streamUrl) {
+        toggleMockRadio();
         return;
       }
 
-      // Stop any running previews first
-      stopAllPreviews();
+      audioNode.src = streamUrl;
+      audioNode.play();
+      isPlayingAudio = true;
+      audioType = 'radio';
+      activeStreamUrl = streamUrl;
 
-      // Play new
-      currentPreviewId = id;
-      playIcon.setAttribute('data-lucide', 'square');
-      playIcon.classList.add('text-red-500');
-      lucide.createIcons();
+      // Update UI Banner
+      const banner = document.getElementById('active-radio-banner');
+      banner.classList.remove('hidden');
+      document.getElementById('active-radio-name').innerText = `بث مباشر: ${name}`;
+    }
 
-      if (id === 'beep') {
-        try {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          const playTone = (freq, duration, delay) => {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = "sine";
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime + delay);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + duration - 0.05);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(audioCtx.currentTime + delay);
-            osc.stop(audioCtx.currentTime + delay + duration);
-          };
-
-          // Loop 12 times (~18.4s)
-          for (let i = 0; i < 12; i++) {
-            const seqDelay = i * 1.6;
-            playTone(523.25, 0.3, seqDelay);
-            playTone(659.25, 0.3, seqDelay + 0.2);
-            playTone(783.99, 0.4, seqDelay + 0.4);
-          }
-
-          beepTimeoutId = setTimeout(() => {
-            stopAllPreviews();
-          }, 19500);
-
-        } catch (e) {
-          console.log(e);
-        }
-      } else if (url) {
-        previewAudio = new Audio(url);
-        previewAudio.play()
-          .then(() => {
-            previewAudio.onended = () => {
-              stopAllPreviews();
-            };
-          })
-          .catch(e => {
-            console.log(e);
-            stopAllPreviews();
-          });
+    function toggleMockRadio() {
+      if (isPlayingAudio) {
+        audioNode.pause();
+        isPlayingAudio = false;
+        document.getElementById('active-radio-banner').classList.add('hidden');
+      } else {
+        audioNode.play();
+        isPlayingAudio = true;
+        document.getElementById('active-radio-banner').classList.remove('hidden');
       }
     }
 
-    function stopAllPreviews() {
-      if (currentPreviewId) {
-        const playIcon = document.getElementById(`btn-${currentPreviewId}`);
-        if (playIcon) {
-          playIcon.setAttribute('data-lucide', 'play');
-          playIcon.classList.remove('text-red-500');
+    // Recitation Player Simulator
+    let isPlayingRecitation = false;
+    function playDemoTrack(name, detail, durationText, trackUrl) {
+      document.getElementById('audio-track-title').innerText = name;
+      document.getElementById('audio-track-detail').innerText = detail;
+      document.getElementById('audio-dur').innerText = durationText;
+
+      audioNode.src = trackUrl;
+      audioNode.play();
+      isPlayingAudio = true;
+      isPlayingRecitation = true;
+      audioType = 'recitation';
+      activeStreamUrl = trackUrl;
+
+      // Visual update
+      document.getElementById('audio-wavebar').classList.remove('opacity-50');
+      document.getElementById('play-recitation-icon').setAttribute('data-lucide', 'pause');
+      lucide.createIcons();
+
+      // Track progress simulation
+      audioNode.ontimeupdate = () => {
+        const pct = (audioNode.currentTime / audioNode.duration) * 100;
+        document.getElementById('audio-progress').style.width = `${pct}%`;
+        
+        const min = Math.floor(audioNode.currentTime / 60);
+        const sec = Math.floor(audioNode.currentTime % 60);
+        document.getElementById('audio-time').innerText = `${min}:${sec.toString().padStart(2, '0')}`;
+      };
+    }
+
+    function toggleMockRecitation() {
+      if (isPlayingRecitation) {
+        audioNode.pause();
+        isPlayingRecitation = false;
+        isPlayingAudio = false;
+        document.getElementById('audio-wavebar').classList.add('opacity-50');
+        document.getElementById('play-recitation-icon').setAttribute('data-lucide', 'play');
+      } else {
+        if (!audioNode.src) {
+          // Play default track
+          playDemoTrack('سورة البقرة', 'طرد الشياطين والتحصين الشامل للمنزل', '12:35', 'https://server8.mp3quran.net/afs/002.mp3');
+          return;
         }
+        audioNode.play();
+        isPlayingRecitation = true;
+        isPlayingAudio = true;
+        document.getElementById('audio-wavebar').classList.remove('opacity-50');
+        document.getElementById('play-recitation-icon').setAttribute('data-lucide', 'pause');
       }
-
-      if (audioCtx) {
-        audioCtx.close().catch(() => {});
-        audioCtx = null;
-      }
-      if (previewAudio) {
-        previewAudio.pause();
-        previewAudio = null;
-      }
-      if (beepTimeoutId) {
-        clearTimeout(beepTimeoutId);
-        beepTimeoutId = null;
-      }
-
-      currentPreviewId = null;
       lucide.createIcons();
     }
 
-    // Initialize lucide
-    lucide.createIcons();
+    // Tasbih counter simulator
+    let tasbihCount = 0;
+    let tasbihTarget = 33;
+    function incrementMockTasbih() {
+      tasbihCount += 1;
+      document.getElementById('tasbih-num').innerText = tasbihCount;
+      
+      if (tasbihCount >= tasbihTarget) {
+        // Goal achieved flash
+        document.getElementById('tasbih-num').classList.add('text-emerald-500', 'scale-110');
+        setTimeout(() => {
+          document.getElementById('tasbih-num').classList.remove('text-emerald-500', 'scale-110');
+        }, 300);
+      }
+    }
+
+    function switchMockTasbihTarget(targetVal) {
+      tasbihTarget = targetVal;
+      document.getElementById('tasbih-target-label').innerText = `الهدف: ${targetVal}`;
+      resetMockTasbih();
+    }
+
+    function resetMockTasbih() {
+      tasbihCount = 0;
+      document.getElementById('tasbih-num').innerText = 0;
+    }
+
+    // Initialization
+    switchTab('home');
+    switchShieldSubtab('adhkar');
+    switchAdhkarCategory('morning');
+    switchRuqyahSegment('written');
   </script>
 </body>
 </html>
