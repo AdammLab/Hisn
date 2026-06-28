@@ -6,6 +6,7 @@ import {
 } from "./data/adhkar";
 
 const fullWrittenRuqyah = [...unifiedRuqyahSteps, ...treatmentRuqyahGuide];
+import quranData from "./data/quran.json";
 import { 
   BookOpen, Sparkles, Clock, Compass, Calendar, Settings, Sun, Moon, 
   Play, Pause, SkipForward, SkipBack, Volume2, RotateCcw, VolumeX, Square,
@@ -111,28 +112,18 @@ function App() {
   const [showResetModal, setShowResetModal] = useState(false);
 
   // --- Quran States ---
-  const [quranSurahs, setQuranSurahs] = useState(() => {
-    try {
-      const cached = localStorage.getItem("quranSurahsIndex");
-      return cached ? JSON.parse(cached) : [];
-    } catch {
-      return [];
-    }
-  });
-  const [isQuranLoading, setIsQuranLoading] = useState(false);
+  const [quranSurahs] = useState(quranData.surahs);
+  const [isQuranLoading] = useState(false);
   const [activeSurah, setActiveSurah] = useState(null);
   const [quranSearchQuery, setQuranSearchQuery] = useState("");
   const [quranReadMode, setQuranReadMode] = useState("page"); // verses, page
-  const [loadedSurahs, setLoadedSurahs] = useState(() => {
-    try {
-      const cached = localStorage.getItem("loadedSurahsData");
-      return cached ? JSON.parse(cached) : {};
-    } catch {
-      return {};
-    }
-  });
-  const [activeSurahData, setActiveSurahData] = useState(null);
-  const [isActiveSurahLoading, setIsActiveSurahLoading] = useState(false);
+
+  const activeSurahData = useMemo(() => {
+    if (!activeSurah) return null;
+    return quranSurahs.find(s => s.number === activeSurah) || null;
+  }, [activeSurah, quranSurahs]);
+
+  const [isActiveSurahLoading] = useState(false);
   const [quranSearchResults, setQuranSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const pendingScroll = useRef(null);
@@ -395,6 +386,33 @@ function App() {
     if (!isPreset) setLocationStatus("detecting");
     setPrayerTimesError(null);
     
+    // Check if we can use the 24-hour cache
+    const cacheKey = `cachedTimes_${lat}_${lng}_${method}`;
+    const cachedData = localStorage.getItem(cacheKey);
+    const cachedHijri = localStorage.getItem("cachedHijriDate");
+    const lastFetch = localStorage.getItem("lastApiFetchTimestamp");
+    
+    const oneDay = 24 * 60 * 60 * 1000;
+    const isCacheValid = cachedData && cachedHijri && lastFetch && (Date.now() - parseInt(lastFetch, 10) < oneDay);
+    
+    if (isCacheValid) {
+      console.log("Loading timings from 24-hour local cache...");
+      const timings = JSON.parse(cachedData);
+      setPrayerTimes(timings);
+      
+      const parsedHijri = JSON.parse(cachedHijri);
+      setHijriDate({
+        day: parsedHijri.day,
+        monthNameAr: parsedHijri.month.ar,
+        monthNameEn: parsedHijri.month.en,
+        year: parsedHijri.year,
+        weekdayAr: parsedHijri.weekday.ar
+      });
+      
+      setLocationStatus("success");
+      return;
+    }
+    
     try {
       const nowSec = Math.floor(Date.now() / 1000);
       const res = await fetch(`https://api.aladhan.com/v1/timings/${nowSec}?latitude=${lat}&longitude=${lng}&method=${method}`);
@@ -413,8 +431,10 @@ function App() {
           weekdayAr: hijri.weekday.ar
         });
         
-        localStorage.setItem("cachedPrayerTimes", JSON.stringify(timings));
+        localStorage.setItem(cacheKey, JSON.stringify(timings));
+        localStorage.setItem("cachedPrayerTimes", JSON.stringify(timings)); // fallback compatibility
         localStorage.setItem("cachedHijriDate", JSON.stringify(hijri));
+        localStorage.setItem("lastApiFetchTimestamp", Date.now().toString());
         setLocationStatus("success");
       } else {
         throw new Error("Invalid API Response Format");
@@ -425,11 +445,11 @@ function App() {
       setLocationStatus("error");
       
       // Load offline fallback cache
-      const cachedTimes = localStorage.getItem("cachedPrayerTimes");
-      const cachedHijri = localStorage.getItem("cachedHijriDate");
-      if (cachedTimes) setPrayerTimes(JSON.parse(cachedTimes));
-      if (cachedHijri) {
-        const parsed = JSON.parse(cachedHijri);
+      const fallbackTimes = localStorage.getItem("cachedPrayerTimes") || cachedData;
+      const fallbackHijri = localStorage.getItem("cachedHijriDate") || cachedHijri;
+      if (fallbackTimes) setPrayerTimes(JSON.parse(fallbackTimes));
+      if (fallbackHijri) {
+        const parsed = JSON.parse(fallbackHijri);
         setHijriDate({
           day: parsed.day,
           monthNameAr: parsed.month.ar,
@@ -447,91 +467,7 @@ function App() {
     }
   }, [selectedLocation]);
 
-  // --- Fetch Quran Surahs List ---
-  useEffect(() => {
-    if (activeTab === "quran" && quranSurahs.length === 0) {
-      setIsQuranLoading(true);
-      fetch("https://api.alquran.cloud/v1/surah")
-        .then(res => res.json())
-        .then(json => {
-          if (json.code === 200 && json.data) {
-            setQuranSurahs(json.data);
-            try {
-              localStorage.setItem("quranSurahsIndex", JSON.stringify(json.data));
-            } catch (e) {
-              console.log("Failed to cache Quran index:", e);
-            }
-          }
-          setIsQuranLoading(false);
-        })
-        .catch(err => {
-          console.error("Failed to fetch surah list:", err);
-          setIsQuranLoading(false);
-        });
-    }
-  }, [activeTab, quranSurahs]);
-
-  // --- Active Surah Loader ---
-  useEffect(() => {
-    if (!activeSurah) {
-      setActiveSurahData(null);
-      return;
-    }
-    
-    if (loadedSurahs[activeSurah]) {
-      setActiveSurahData(loadedSurahs[activeSurah]);
-      return;
-    }
-
-    setIsActiveSurahLoading(true);
-    fetch(`https://api.alquran.cloud/v1/surah/${activeSurah}/ar.uthmani`)
-      .then(res => res.json())
-      .then(json => {
-        if (json.code === 200 && json.data) {
-          const data = {
-            number: json.data.number,
-            name: json.data.name,
-            englishName: json.data.englishName,
-            revelationType: json.data.revelationType === "Meccan" ? "مكية" : "مدنية",
-            ayahs: json.data.ayahs.map(a => ({
-              num: a.numberInSurah,
-              text: a.text
-            }))
-          };
-          setLoadedSurahs(prev => {
-            const next = { ...prev, [activeSurah]: data };
-            try {
-              localStorage.setItem("loadedSurahsData", JSON.stringify(next));
-            } catch (e) {
-              console.log("Failed to cache surah data:", e);
-            }
-            return next;
-          });
-          setActiveSurahData(data);
-        }
-        setIsActiveSurahLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to load active surah:", err);
-        setIsActiveSurahLoading(false);
-      });
-  }, [activeSurah, loadedSurahs]);
-
-  // --- Scroll to Ayah after loading ---
-  useEffect(() => {
-    if (activeSurahData && pendingScroll.current !== null) {
-      const ayahNum = pendingScroll.current;
-      pendingScroll.current = null;
-      setTimeout(() => {
-        const element = document.getElementById(`ayah-${activeSurahData.number}-${ayahNum}`);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth", block: "center" });
-        }
-      }, 350);
-    }
-  }, [activeSurahData]);
-
-  // --- Quran Search Debounced API Fetcher ---
+  // --- Quran Search Local Offline Filter ---
   useEffect(() => {
     const query = cleanArabicText(quranSearchQuery.trim());
     if (query.length < 3) {
@@ -541,28 +477,23 @@ function App() {
 
     setIsSearching(true);
     const delayDebounce = setTimeout(() => {
-      fetch(`https://api.alquran.cloud/v1/search/${encodeURIComponent(query)}/all/quran-simple-clean`)
-        .then(res => res.json())
-        .then(json => {
-          if (json.code === 200 && json.data && json.data.matches) {
-            const results = json.data.matches.map(match => ({
-              surahNum: match.surah.number,
-              surahName: match.surah.name,
-              ayahNum: match.numberInSurah,
-              text: match.text
-            }));
-            setQuranSearchResults(results);
-          } else {
-            setQuranSearchResults([]);
+      const results = [];
+      quranData.surahs.forEach(s => {
+        s.ayahs.forEach(a => {
+          const cleanAyahText = cleanArabicText(a.text);
+          if (cleanAyahText.includes(query)) {
+            results.push({
+              surahNum: s.number,
+              surahName: s.name,
+              ayahNum: s.num,
+              text: a.text
+            });
           }
-          setIsSearching(false);
-        })
-        .catch(err => {
-          console.error("Search failed:", err);
-          setQuranSearchResults([]);
-          setIsSearching(false);
         });
-    }, 450);
+      });
+      setQuranSearchResults(results.slice(0, 100));
+      setIsSearching(false);
+    }, 200);
 
     return () => clearTimeout(delayDebounce);
   }, [quranSearchQuery]);
@@ -1713,7 +1644,7 @@ function App() {
                           </span>
                           <div className="text-right">
                             <h4 className="text-xs font-black text-neutral-850 dark:text-neutral-100 font-naskh">{surah.name}</h4>
-                            <span className="text-[9px] font-bold text-neutral-400 dark:text-neutral-500 font-naskh">{surah.revelationType === "Meccan" ? "مكية" : "مدنية"} • {surah.numberOfAyahs} آية</span>
+                            <span className="text-[9px] font-bold text-neutral-400 dark:text-neutral-500 font-naskh">{surah.revelationType} • {surah.ayahs.length} آية</span>
                           </div>
                         </div>
                         <span className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 font-mono font-bold tracking-wider">{surah.englishName}</span>
