@@ -12,7 +12,7 @@ import {
   Play, Pause, SkipForward, SkipBack, Volume2, RotateCcw, VolumeX, Square,
   Bookmark, ChevronLeft, ChevronRight, Check, CheckCircle, Radio, 
   FileText, X, ChevronDown, ChevronUp, Info, Activity, Minus, Plus,
-  MapPin, Sliders, Trash2
+  MapPin, Sliders, Trash2, AlertTriangle, Shield, Award
 } from "lucide-react";
 import { Haptics } from "@capacitor/haptics";
 import { LocalNotifications } from "@capacitor/local-notifications";
@@ -90,7 +90,7 @@ function App() {
   // --- Navigation & Core Settings ---
   const [activeTab, setActiveTab] = useState("dashboard"); // dashboard, quran, shield, utilities
   const [activeShieldSubTab, setActiveShieldSubTab] = useState("adhkar"); // adhkar, ruqyah, radio
-  const [activeUtilitiesSubTab, setActiveUtilitiesSubTab] = useState("prayers"); // prayers, calendar, tasbih, settings
+  const [activeUtilitiesSubTab, setActiveUtilitiesSubTab] = useState("prayers"); // prayers, calendar, tasbih, recovery, settings
   const [activeAdhkarKey, setActiveAdhkarKey] = useState("morning"); // morning, evening, sleep, study
   const [activeRuqyahSubTab, setActiveRuqyahSubTab] = useState("written"); // written, audio
   const [themeMode, setThemeMode] = useState(() => localStorage.getItem("themeMode") || "system");
@@ -111,6 +111,73 @@ function App() {
   const [tasbihTotal, setTasbihTotal] = useState(() => parseInt(localStorage.getItem("tasbihTotal")) || 0);
   const [tasbihTarget, setTasbihTarget] = useState(33);
   const [showResetModal, setShowResetModal] = useState(false);
+
+  // --- Recovery / Purity Tracker States ---
+  const [recoveryStartDate, setRecoveryStartDate] = useState(() => {
+    const val = localStorage.getItem("recoveryStartDate");
+    return val ? parseInt(val, 10) : null;
+  });
+  const [bestRecoveryStreak, setBestRecoveryStreak] = useState(() => {
+    const val = localStorage.getItem("bestRecoveryStreak");
+    return val ? parseInt(val, 10) : 0;
+  });
+  const [relapseHistory, setRelapseHistory] = useState(() => {
+    try {
+      const val = localStorage.getItem("relapseHistory");
+      return val ? JSON.parse(val) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [showRelapseModal, setShowRelapseModal] = useState(false);
+
+  useEffect(() => {
+    if (recoveryStartDate) {
+      localStorage.setItem("recoveryStartDate", recoveryStartDate.toString());
+    } else {
+      localStorage.removeItem("recoveryStartDate");
+    }
+  }, [recoveryStartDate]);
+
+  useEffect(() => {
+    localStorage.setItem("bestRecoveryStreak", bestRecoveryStreak.toString());
+  }, [bestRecoveryStreak]);
+
+  useEffect(() => {
+    localStorage.setItem("relapseHistory", JSON.stringify(relapseHistory));
+  }, [relapseHistory]);
+
+  const currentRecoveryStreak = useMemo(() => {
+    if (!recoveryStartDate) return 0;
+    const diffTime = Date.now() - recoveryStartDate;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 ? diffDays : 0;
+  }, [recoveryStartDate]);
+
+  useEffect(() => {
+    if (currentRecoveryStreak > bestRecoveryStreak) {
+      setBestRecoveryStreak(currentRecoveryStreak);
+    }
+  }, [currentRecoveryStreak, bestRecoveryStreak]);
+
+  const getRecoveryStage = (days) => {
+    if (days === 0 && !recoveryStartDate) return { label: "لم يبدأ التحدي بعد", icon: "🛡️" };
+    if (days <= 3) return { label: "العزيمة والصبر", icon: "🛡️" };
+    if (days <= 7) return { label: "التطهير والبدء", icon: "🌱" };
+    if (days <= 14) return { label: "الثبات والمقاومة", icon: "⚡" };
+    if (days <= 30) return { label: "التحرر والسيطرة", icon: "🔓" };
+    return { label: "ملتزم النقاء والعفة", icon: "🌟" };
+  };
+
+  const recoveryQuotes = [
+    { text: "قَدْ أَفْلَحَ الْمُؤْمِنُونَ * الَّذِينَ هُمْ فِي صَلَاتِهِمْ خَاشِعُونَ * وَالَّذِينَ هُمْ عَنِ اللَّغْوِ مُعْرِضُونَ * وَالَّذِينَ هُمْ لِلْفُرُوجِ حَافِظُونَ", ref: "سورة المؤمنون (1-5)" },
+    { text: "وَلْيَسْتَعْفِفِ الَّذِينَ لَا يَجِدُونَ نِكَاحًا حَتَّىٰ يُغْنِيَهُمُ اللَّهُ مِن فَضْلِهِ", ref: "سورة النور (33)" },
+    { text: "يَا مَعْشَرَ الشَّبَابِ مَنِ اسْتَطَاعَ مِنْكُمُ الْبَاءةَ فَلْيَتَزَوَّجْ، وَمَنْ لَمْ يَسْتَطِعْ فَعَلَيْهِ بِالصَّوْمِ فَإِنَّهُ لَهُ وَجَاءٌ", ref: "حديث شريف (متفق عليه)" },
+    { text: "قُل لِّلْمُؤْمِنِينَ يَغُضُّوا مِنْ أَبْصَارِهِمْ وَيَحْفَظُوا فُرُوجَهُمْ ۚ ذَٰلِكَ أَزْكَىٰ لَهُمْ", ref: "سورة النور (30)" },
+    { text: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا * وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ", ref: "سورة الطلاق (2-3)" }
+  ];
+
+  const activeRecoveryQuote = useMemo(() => recoveryQuotes[currentRecoveryStreak % recoveryQuotes.length], [currentRecoveryStreak, recoveryQuotes]);
 
   // --- Quran States ---
   const [quranSurahs] = useState(quranData.surahs);
@@ -315,7 +382,7 @@ function App() {
 
     if (isPlaying) {
       navigator.mediaSession.playbackState = "playing";
-      let title = "حصن المسلم";
+      let title = "حصن";
       let artist = "الرقية والأذكار";
       let album = "Hisn App";
 
@@ -1403,7 +1470,7 @@ function App() {
             <Sparkles className="w-4.5 h-4.5" />
           </div>
           <div>
-            <h1 className="text-sm font-black tracking-tight select-none">حصن المسلم</h1>
+            <h1 className="text-sm font-black tracking-tight select-none">حصن</h1>
             <p className="text-[9px] text-neutral-400 dark:text-neutral-500 font-bold -mt-0.5">رفيقك اليومي للعبادة</p>
           </div>
         </div>
@@ -2209,11 +2276,12 @@ function App() {
         {activeTab === "utilities" && (
           <div className="space-y-6 animate-fade-slide-in">
             {/* Sub-tab segmented toggle */}
-            <div className="grid grid-cols-4 bg-neutral-100 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-850 rounded-2xl p-1 gap-1">
+            <div className="grid grid-cols-5 bg-neutral-100 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-850 rounded-2xl p-1 gap-1">
               {[
                 { id: "prayers", label: "المواقيت" },
                 { id: "calendar", label: "الهجري" },
                 { id: "tasbih", label: "المسبحة" },
+                { id: "recovery", label: "التعافي" },
                 { id: "settings", label: "الضبط" }
               ].map(subTab => (
                 <button
@@ -2460,6 +2528,108 @@ function App() {
                 </div>
               </div>
             )}
+
+            {/* --- SUB-TAB: PURITY & RECOVERY TRACKER (تعقب التعافي والنقاء) --- */}
+            {activeUtilitiesSubTab === "recovery" && (
+              <div className="space-y-6 animate-fade-slide-in">
+                <div className="space-y-0.5 text-right w-full">
+                  <h3 className="text-sm font-extrabold font-naskh">تحدي النقاء والعفة</h3>
+                  <p className="text-[9px] text-neutral-500 dark:text-neutral-400 font-naskh font-bold">تعقب أيام العفة والتعافي من العادات السلبية بصورة روحانية هادفة</p>
+                </div>
+
+                {/* Main Streak Board */}
+                <div className="bg-white dark:bg-[#0e0e10] border border-neutral-200 dark:border-neutral-850 rounded-[28px] p-5 text-center flex flex-col items-center gap-4 shadow-sm relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-500/5 dark:bg-emerald-500/10 rounded-full translate-x-8 -translate-y-8"></div>
+                  
+                  {recoveryStartDate ? (
+                    <>
+                      <div className="flex justify-between items-center w-full">
+                        <span className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-[9px] font-bold font-naskh flex items-center gap-1">
+                          <Award className="w-3.5 h-3.5" />
+                          <span>أفضل رقم: {bestRecoveryStreak} يوم</span>
+                        </span>
+                        <span className="text-[9px] text-neutral-400 dark:text-neutral-500 font-naskh font-bold">التحدي نشط حالياً</span>
+                      </div>
+
+                      {/* Streak Days Circular Indicator */}
+                      <div className="relative w-32 h-32 flex flex-col items-center justify-center">
+                        <svg className="w-full h-full transform -rotate-90">
+                          <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="4" className="text-neutral-100 dark:text-neutral-900" fill="transparent" />
+                          <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="4" className="text-emerald-500" fill="transparent" stroke-dasharray="364.4" stroke-dashoffset={364.4 - Math.min((currentRecoveryStreak / 30) * 364.4, 364.4)} />
+                        </svg>
+                        <div className="absolute flex flex-col items-center justify-center">
+                          <span className="text-3xl font-black font-sans text-neutral-900 dark:text-neutral-50">{currentRecoveryStreak}</span>
+                          <span className="text-[9px] font-black text-neutral-400 dark:text-neutral-500 font-naskh">يوم نقاء</span>
+                        </div>
+                      </div>
+
+                      {/* Stage info */}
+                      <div className="space-y-1">
+                        <div className="text-xs font-black text-neutral-800 dark:text-neutral-200 flex items-center justify-center gap-1">
+                          <span>{getRecoveryStage(currentRecoveryStreak).icon}</span>
+                          <span>المرحلة: {getRecoveryStage(currentRecoveryStreak).label}</span>
+                        </div>
+                        <p className="text-[8px] text-neutral-450 dark:text-neutral-500 font-naskh">استمر للحصول على الترقية القادمة</p>
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="flex gap-3 w-full pt-2">
+                        <button
+                          onClick={() => { triggerHaptic(50); setShowRelapseModal(true); }}
+                          className="flex-1 py-3 bg-red-500/10 hover:bg-red-500/15 border border-red-500/20 text-red-500 rounded-2xl text-[10px] font-black font-naskh transition-all clickable"
+                        >
+                          لقد زللت (إعادة ضبط)
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="py-6 space-y-4 flex flex-col items-center">
+                      <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                        <Shield className="w-6 h-6" />
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="text-xs font-black text-neutral-800 dark:text-neutral-200 font-naskh">ابدأ رحلة التعافي والنقاء</h4>
+                        <p className="text-[9px] text-neutral-500 dark:text-neutral-400 font-naskh leading-relaxed">
+                          التزم بالعفة وراقب أيام النقاء والتعافي من العادات السلبية مع التحفيز الروحاني والتسجيل التلقائي.
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setRecoveryStartDate(Date.now());
+                          triggerHaptic([50, 50]);
+                        }}
+                        className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-[10px] font-black font-naskh transition-all clickable shadow-sm"
+                      >
+                        ابدأ التحدي الآن 🛡️
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Motivational Quote Card */}
+                <div className="bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-850 rounded-2xl p-4 space-y-2 text-right">
+                  <span className="text-[8px] font-black text-neutral-400 dark:text-neutral-500 font-naskh uppercase tracking-wide">جرعة التحفيز الإيماني</span>
+                  <p className="text-[10px] font-bold leading-loose text-neutral-800 dark:text-neutral-300 font-amiri">{activeRecoveryQuote.text}</p>
+                  <span className="text-[8px] font-black text-neutral-450 dark:text-neutral-500 font-sans block text-left">— {activeRecoveryQuote.ref}</span>
+                </div>
+
+                {/* Relapse Logs History */}
+                {relapseHistory.length > 0 && (
+                  <div className="bg-white dark:bg-[#0e0e10] border border-neutral-200 dark:border-neutral-850 rounded-[28px] p-4 space-y-3 text-right shadow-sm">
+                    <span className="text-[8px] font-black text-neutral-400 dark:text-neutral-500 font-naskh uppercase tracking-wide">سجل المحاولات السابقة (آخر 5 محاولات)</span>
+                    <div className="space-y-2 max-h-[140px] overflow-y-auto">
+                      {relapseHistory.slice(0, 5).map((log, idx) => (
+                        <div key={idx} className="flex justify-between items-center p-2.5 bg-neutral-50 dark:bg-[#16161a] border border-neutral-150 dark:border-neutral-850 rounded-xl">
+                          <span className="text-[9px] font-black text-neutral-750 dark:text-neutral-300">{log.date}</span>
+                          <span className="text-[9px] font-bold text-neutral-500 dark:text-neutral-400 font-naskh">المدة: <span className="font-mono text-neutral-900 dark:text-neutral-100 font-black">{log.duration}</span> يوم نقاء</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
 
             {/* --- SUB-TAB: SETTINGS (الضبط والإعدادات) --- */}
             {activeUtilitiesSubTab === "settings" && (
@@ -2710,6 +2880,46 @@ function App() {
                 className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white text-xs font-black rounded-xl font-naskh transition-colors clickable shadow-sm"
               >
                 نعم، احذف كل شيء
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- RELAPSE CONFIRMATION DIALOG MODAL --- */}
+      {showRelapseModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in">
+          <div className="bg-white dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 w-full max-w-sm space-y-5 text-right shadow-2xl animate-scale-up">
+            <div className="space-y-1.5 flex flex-col items-center text-center">
+              <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mb-1">
+                <AlertTriangle className="w-6 h-6" />
+              </div>
+              <h3 className="text-sm font-black text-red-650 dark:text-red-400 font-naskh">هل أنت متأكد من تسجيل زلّة؟</h3>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 font-bold font-naskh leading-relaxed">
+                سيتم إعادة ضبط عداد النقاء الحالي ({currentRecoveryStreak} يوم) إلى الصفر وحفظ هذه المحاولة في السجل للمتابعة.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button 
+                onClick={() => { triggerHaptic(30); setShowRelapseModal(false); }}
+                className="flex-1 py-3 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-850 dark:hover:bg-neutral-750 text-neutral-800 dark:text-neutral-100 text-xs font-black rounded-xl font-naskh transition-colors clickable"
+              >
+                تراجع وإلغاء
+              </button>
+              <button 
+                onClick={() => {
+                  const logEntry = {
+                    date: new Date().toLocaleDateString("ar-EG", { year: "numeric", month: "short", day: "numeric" }),
+                    duration: currentRecoveryStreak
+                  };
+                  setRelapseHistory(prev => [logEntry, ...prev].slice(0, 10)); // Keep last 10 entries
+                  setRecoveryStartDate(Date.now());
+                  setShowRelapseModal(false);
+                  triggerHaptic([100, 100]);
+                }}
+                className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white text-xs font-black rounded-xl font-naskh transition-colors clickable shadow-sm"
+              >
+                نعم، إعادة الضبط
               </button>
             </div>
           </div>
