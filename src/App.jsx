@@ -4,6 +4,8 @@ import {
   unifiedRuqyahSteps, 
   treatmentRuqyahGuide
 } from "./data/adhkar";
+
+const fullWrittenRuqyah = [...unifiedRuqyahSteps, ...treatmentRuqyahGuide];
 import { 
   BookOpen, Sparkles, Clock, Compass, Calendar, Settings, Sun, Moon, 
   Play, Pause, SkipForward, SkipBack, Volume2, RotateCcw, VolumeX, Square,
@@ -170,8 +172,6 @@ function App() {
   const [prayerAlert, setPrayerAlert] = useState(null);
 
   const [randomReminder, setRandomReminder] = useState(dailyReminders[0]);
-  const [activeWrittenSection, setActiveWrittenSection] = useState("steps"); // steps, guides
-  const [activeWrittenGuideIndex, setActiveWrittenGuideIndex] = useState(0);
 
   const todayKey = useMemo(() => new Date().toDateString(), []);
 
@@ -959,10 +959,8 @@ function App() {
     const newCounts = { ...itemCounts };
 
     let items = [];
-    if (type === "ruqyah") {
-      items = unifiedRuqyahSteps;
-    } else if (type === "treatment") {
-      items = treatmentRuqyahGuide;
+    if (type === "ruqyah" || type === "treatment") {
+      items = fullWrittenRuqyah;
     } else if (type === "quranic") {
       items = adhkarData.quranic;
     } else {
@@ -1987,194 +1985,110 @@ function App() {
                 {/* --- Written Ruqyah Steps & Guides --- */}
                 {activeRuqyahSubTab === "written" && (
                   <div className="space-y-6">
-                    <div className="flex bg-neutral-100 dark:bg-[#16161a] border border-neutral-250/20 dark:border-neutral-800/20 rounded-2xl p-1 gap-1 max-w-[200px] ml-auto">
+                    <div className="flex justify-between items-center px-1">
+                      <span className="text-[10px] font-black text-neutral-400 font-naskh">
+                        بروتوكول الرقية والتحصين الكامل الشامل ({fullWrittenRuqyah.length} خطوة موحدة)
+                      </span>
                       <button 
-                        onClick={() => { setActiveWrittenSection("steps"); triggerHaptic(30); }}
-                        className={`flex-1 py-1 rounded-xl text-[9px] font-black font-naskh transition-all clickable ${
-                          activeWrittenSection === "steps" ? "bg-black dark:bg-white text-white dark:text-black" : "text-neutral-500"
-                        }`}
+                        onClick={() => handleResetSection("ruqyah", "ruqyah")} 
+                        className="text-[9px] font-black text-red-500 hover:underline"
                       >
-                        الخطوات العامة
-                      </button>
-                      <button 
-                        onClick={() => { setActiveWrittenSection("guides"); triggerHaptic(30); }}
-                        className={`flex-1 py-1 rounded-xl text-[9px] font-black font-naskh transition-all clickable ${
-                          activeWrittenSection === "guides" ? "bg-black dark:bg-white text-white dark:text-black" : "text-neutral-500"
-                        }`}
-                      >
-                        أدلة العلاج
+                        إعادة ضبط الكل
                       </button>
                     </div>
 
-                    {activeWrittenSection === "steps" ? (
-                      // 25 Steps
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-center px-1">
-                          <span className="text-[10px] font-black text-neutral-400 font-naskh">خطوات الرقية الخمسة والعشرون الشاملة</span>
-                          <button onClick={() => handleResetSection("ruqyah", "ruqyah")} className="text-[9px] font-black text-red-500 hover:underline">إعادة ضبط الكل</button>
-                        </div>
-                        {unifiedRuqyahSteps.map((step, idx) => {
-                          const isDone = !!completedItems[step.id];
-                          const remaining = itemCounts[step.id] !== undefined ? itemCounts[step.id] : step.repeat;
-                          return (
-                            <div 
-                              key={step.id} 
-                              className={`bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-5 text-right space-y-3.5 transition-all ${
-                                isDone ? "opacity-60 grayscale-[40%]" : ""
-                              }`}
-                            >
-                              <div className="flex justify-between items-center border-b border-neutral-100 dark:border-neutral-850 pb-2">
-                                <span className="text-[10px] font-naskh font-black text-neutral-400 dark:text-neutral-500">الخطوة {idx + 1} • {step.category}</span>
-                                <button 
-                                  onClick={() => {
-                                    triggerHaptic(50);
-                                    const nextComp = { ...completedItems, [step.id]: !isDone };
-                                    const nextCounts = { ...itemCounts, [step.id]: isDone ? step.repeat : 0 };
-                                    saveState(nextComp, nextCounts);
-                                  }}
-                                  className={`w-6 h-6 rounded-full border flex items-center justify-center transition-all clickable ${
-                                    isDone 
-                                      ? "bg-black dark:bg-white border-black dark:border-white text-white dark:text-black" 
-                                      : "border-neutral-300 dark:border-neutral-700 bg-white dark:bg-[#0e0e10]"
-                                  }`}
-                                >
-                                  {isDone && <Check className="w-3.5 h-3.5" />}
-                                </button>
-                              </div>
-                              <h4 className="text-xs font-black text-neutral-900 dark:text-neutral-50 font-naskh leading-relaxed">{step.title}</h4>
-                              <p className="text-xs font-bold leading-loose text-neutral-800 dark:text-neutral-200 font-amiri select-text">{step.text}</p>
-                              
-                              {step.reward && (
-                                <div className="p-3 bg-neutral-100/50 dark:bg-[#0e0e10]/50 border border-neutral-100 dark:border-neutral-850 rounded-2xl text-[9px] font-bold text-neutral-500 dark:text-neutral-400 font-naskh leading-relaxed select-text">
-                                  الأثر/الفضل: {step.reward}
-                                </div>
-                              )}
-                              {step.hadith && (
-                                <div className="p-3 bg-neutral-100/20 dark:bg-[#0e0e10]/20 border border-neutral-100 dark:border-neutral-900 rounded-2xl text-[9px] text-neutral-450 dark:text-neutral-500 font-naskh leading-relaxed select-text">
-                                  الدليل/المرجع: {step.hadith}
-                                </div>
-                              )}
-
-                              {/* Interactive counter row */}
-                              <div className="flex justify-between items-center pt-2">
-                                <button 
-                                  onClick={() => handleResetItem(step.id)}
-                                  className="p-2 text-neutral-400 hover:text-red-500 active:scale-90 transition-transform clickable"
-                                  title="إعادة التصفير"
-                                >
-                                  <RotateCcw className="w-3.5 h-3.5" />
-                                </button>
-                                
-                                <button 
-                                  onClick={() => !isDone && handleItemTap(step.id, step.repeat)}
-                                  disabled={isDone}
-                                  className={`px-6 py-2 rounded-2xl font-sans text-xs font-black flex items-center gap-2 active:scale-96 transition-all shadow-sm border clickable ${
-                                    isDone
-                                      ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-450"
-                                      : "bg-black dark:bg-white border-black dark:border-white text-white dark:text-black"
-                                  }`}
-                                >
-                                  {isDone ? (
-                                    <>
-                                      <Check className="w-4 h-4" /> اكتملت الخطوة
-                                    </>
-                                  ) : (
-                                    <>
-                                      تكرار القراءة: {remaining} من {step.repeat}
-                                    </>
-                                  )}
-                                </button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      // Consolidated Treatment Ruqyah (42 Steps)
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-center px-1">
-                          <span className="text-[10px] font-black text-neutral-400 font-naskh">بروتوكول الرقية العلاجية الشاملة الموحدة (42 خطوة)</span>
-                          <button onClick={() => handleResetSection("treatment", "treatment")} className="text-[9px] font-black text-red-500 hover:underline">إعادة ضبط الكل</button>
-                        </div>
-                        <div className="space-y-4 max-h-[500px] overflow-y-auto pr-1">
-                          {treatmentRuqyahGuide.map((step, idx) => {
-                            const isDone = !!completedItems[step.id];
-                            const remaining = itemCounts[step.id] !== undefined ? itemCounts[step.id] : step.repeat;
-                            return (
-                              <div 
-                                key={step.id} 
-                                className={`bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-5 text-right space-y-3.5 transition-all ${
-                                  isDone ? "opacity-60 grayscale-[40%]" : ""
+                    <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
+                      {fullWrittenRuqyah.map((step, idx) => {
+                        const isDone = !!completedItems[step.id];
+                        const remaining = itemCounts[step.id] !== undefined ? itemCounts[step.id] : step.repeat;
+                        const benefitText = step.reward || step.benefit;
+                        const referenceText = step.hadith || step.reference;
+                        const isSpecialized = step.id.startsWith("tr_");
+                        
+                        return (
+                          <div 
+                            key={step.id} 
+                            className={`bg-neutral-50 dark:bg-[#16161a] border border-neutral-200 dark:border-neutral-800 rounded-3xl p-5 text-right space-y-3.5 transition-all ${
+                              isDone ? "opacity-60 grayscale-[40%]" : ""
+                            }`}
+                          >
+                            <div className="flex justify-between items-center border-b border-neutral-100 dark:border-neutral-850 pb-2">
+                              <span className="text-[10px] font-naskh font-black text-neutral-400 dark:text-neutral-500">
+                                الخطوة {idx + 1} • {step.category}
+                              </span>
+                              <button 
+                                onClick={() => {
+                                  triggerHaptic(50);
+                                  const nextComp = { ...completedItems, [step.id]: !isDone };
+                                  const nextCounts = { ...itemCounts, [step.id]: isDone ? step.repeat : 0 };
+                                  saveState(nextComp, nextCounts);
+                                }}
+                                className={`w-6 h-6 rounded-full border flex items-center justify-center transition-all clickable ${
+                                  isDone 
+                                    ? "bg-black dark:bg-white border-black dark:border-white text-white dark:text-black" 
+                                    : "border-neutral-300 dark:border-neutral-700 bg-white dark:bg-[#0e0e10]"
                                 }`}
                               >
-                                <div className="flex justify-between items-center border-b border-neutral-100 dark:border-neutral-850 pb-2">
-                                  <span className="text-[10px] font-naskh font-black text-neutral-400 dark:text-neutral-500">الخطوة {idx + 1} • {step.category}</span>
-                                  <button 
-                                    onClick={() => {
-                                      triggerHaptic(50);
-                                      const nextComp = { ...completedItems, [step.id]: !isDone };
-                                      const nextCounts = { ...itemCounts, [step.id]: isDone ? step.repeat : 0 };
-                                      saveState(nextComp, nextCounts);
-                                    }}
-                                    className={`w-6 h-6 rounded-full border flex items-center justify-center transition-all clickable ${
-                                      isDone 
-                                        ? "bg-black dark:bg-white border-black dark:border-white text-white dark:text-black" 
-                                        : "border-neutral-300 dark:border-neutral-700 bg-white dark:bg-[#0e0e10]"
-                                    }`}
-                                  >
-                                    {isDone && <Check className="w-3.5 h-3.5" />}
-                                  </button>
-                                </div>
-                                <h4 className="text-xs font-black text-amber-700 dark:text-amber-400 font-naskh leading-relaxed">{step.title}</h4>
-                                <p className="text-xs font-bold leading-loose text-neutral-800 dark:text-neutral-200 font-amiri select-text">{step.text}</p>
-                                
-                                {step.benefit && (
-                                  <div className="p-3 bg-neutral-100/50 dark:bg-[#0e0e10]/50 border border-neutral-100 dark:border-neutral-850 rounded-2xl text-[9px] font-bold text-neutral-500 dark:text-neutral-400 font-naskh leading-relaxed select-text">
-                                    الأثر والفضل: {step.benefit}
-                                  </div>
-                                )}
-                                {step.reference && (
-                                  <div className="p-3 bg-neutral-100/20 dark:bg-[#0e0e10]/20 border border-neutral-100 dark:border-neutral-900 rounded-2xl text-[9px] text-neutral-450 dark:text-neutral-500 font-naskh leading-relaxed select-text">
-                                    الدليل والبيان: {step.reference}
-                                  </div>
-                                )}
-
-                                {/* Interactive counter row */}
-                                <div className="flex justify-between items-center pt-2">
-                                  <button 
-                                    onClick={() => handleResetItem(step.id)}
-                                    className="p-2 text-neutral-400 hover:text-red-500 active:scale-90 transition-transform clickable"
-                                    title="إعادة التصفير"
-                                  >
-                                    <RotateCcw className="w-3.5 h-3.5" />
-                                  </button>
-                                  
-                                  <button 
-                                    onClick={() => !isDone && handleItemTap(step.id, step.repeat)}
-                                    disabled={isDone}
-                                    className={`px-6 py-2 rounded-2xl font-sans text-xs font-black flex items-center gap-2 active:scale-96 transition-all shadow-sm border clickable ${
-                                      isDone
-                                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-450"
-                                        : "bg-black dark:bg-white border-black dark:border-white text-white dark:text-black"
-                                    }`}
-                                  >
-                                    {isDone ? (
-                                      <>
-                                        <Check className="w-4 h-4" /> اكتملت الخطوة
-                                      </>
-                                    ) : (
-                                      <>
-                                        تكرار القراءة: {remaining} من {step.repeat}
-                                      </>
-                                    )}
-                                  </button>
-                                </div>
+                                {isDone && <Check className="w-3.5 h-3.5" />}
+                              </button>
+                            </div>
+                            
+                            <h4 className={`text-xs font-black font-naskh leading-relaxed ${
+                              isSpecialized ? "text-amber-700 dark:text-amber-400" : "text-neutral-900 dark:text-neutral-50"
+                            }`}>
+                              {step.title}
+                            </h4>
+                            
+                            <p className="text-xs font-bold leading-loose text-neutral-800 dark:text-neutral-200 font-amiri select-text">
+                              {step.text}
+                            </p>
+                            
+                            {benefitText && (
+                              <div className="p-3 bg-neutral-100/50 dark:bg-[#0e0e10]/50 border border-neutral-100 dark:border-neutral-850 rounded-2xl text-[9px] font-bold text-neutral-500 dark:text-neutral-400 font-naskh leading-relaxed select-text">
+                                الأثر والفضل: {benefitText}
                               </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
+                            )}
+                            
+                            {referenceText && (
+                              <div className="p-3 bg-neutral-100/20 dark:bg-[#0e0e10]/20 border border-neutral-100 dark:border-neutral-900 rounded-2xl text-[9px] text-neutral-450 dark:text-neutral-500 font-naskh leading-relaxed select-text">
+                                الدليل والبيان: {referenceText}
+                              </div>
+                            )}
+
+                            {/* Interactive counter row */}
+                            <div className="flex justify-between items-center pt-2">
+                              <button 
+                                onClick={() => handleResetItem(step.id)}
+                                className="p-2 text-neutral-400 hover:text-red-500 active:scale-90 transition-transform clickable"
+                                title="إعادة التصفير"
+                              >
+                                <RotateCcw className="w-3.5 h-3.5" />
+                              </button>
+                              
+                              <button 
+                                onClick={() => !isDone && handleItemTap(step.id, step.repeat)}
+                                disabled={isDone}
+                                className={`px-6 py-2 rounded-2xl font-sans text-xs font-black flex items-center gap-2 active:scale-96 transition-all shadow-sm border clickable ${
+                                  isDone
+                                    ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-450"
+                                    : "bg-black dark:bg-white border-black dark:border-white text-white dark:text-black"
+                                }`}
+                              >
+                                {isDone ? (
+                                  <>
+                                    <Check className="w-4 h-4" /> اكتملت الخطوة
+                                  </>
+                                ) : (
+                                  <>
+                                    تكرار القراءة: {remaining} من {step.repeat}
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
 
